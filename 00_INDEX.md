@@ -36,11 +36,11 @@ Any agent can read this file to orient itself in one pass.
 | [[08_SKILLS/self-critic-verifier]] | Pre-output audit for grounding, links, policy |
 | [[08_SKILLS/vault-curator]] | Enforce frontmatter, filenames, wikilinks, index updates |
 | [[08_SKILLS/distill-and-compress]] | Extract durable facts into structured notes |
-40|| [[08_SKILLS/document-creation-pro]] | Transform raw input into structured, high-quality documentation |
+| [[08_SKILLS/document-creation-pro]] | Transform raw input into structured, high-quality documentation |
 | [[08_SKILLS/session-handoff]] | Compact state snapshot for handoffs |
+| [[08_SKILLS/github]] | GitHub workflows: auth, repos, issues, PRs, CI/CD, code review |
 | [[08_SKILLS/machine-control-and-tooling]] | Local tool discovery, fast search, efficient browsing, machine control |
 | [[08_SKILLS/pdf-architect]] | PDF design, layout, visual QA with ReportLab + ImageMagick |
-
 
 ## How Agents Use This Vault
 

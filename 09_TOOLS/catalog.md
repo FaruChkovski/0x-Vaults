@@ -40,11 +40,12 @@ Agents use what they need from here to complete tasks. Each entry documents what
 | web_extract | Extract page content | Hermes `web_extract` | Read full pages, PDFs |
 | browser_exec | Drive a real web browser | Hermes `browser_exec` | Interactive sites, logins, automation |
 
-## External Agent Hosts
+## External Services
 
 | Tool | Purpose | How to Invoke | When to Use |
 |------|---------|---------------|-------------|
-| herdr | Local agent host — runs Claude Code, Codex, any agent in `herdr-core` | `curl -fsSL https://releases.herdr.dev/app/install.sh \| sh` (macOS/Linux) or `irm https://herdr.dev \| iex` (Windows PowerShell) | Run persistent agents that survive window closes; manage via `hc` CLI |
+| GitHub | Repository management, PRs, issues, CI/CD via `gh` CLI, `git`, and REST API | Hermes `terminal` (`gh`, `git`, `curl`) + `09_TOOLS/github` reference | Push code, open PRs, monitor CI, create issues, review PRs |
+| herdr | Local agent host — runs Claude Code, Codex, any agent in `herdr-core` | `curl -fsSL https://releases.herdr.dev/app/install.sh | sh` (macOS/Linux) or `irm https://herdr.dev | iex` (Windows PowerShell) | Run persistent agents that survive window closes; manage via `hc` CLI |
 
 ## Usage Rule
 
