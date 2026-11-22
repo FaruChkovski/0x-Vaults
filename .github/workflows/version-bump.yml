@@ -1,0 +1,49 @@
+name: Bump vault version on push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    # Prevent infinite loops: skip when this push was already a version bump
+    if: >
+      !contains(github.event.head_commit.message, '[skip ci]') &&
+      !contains(github.event.head_commit.message, 'chore(release): bump version')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Bump patch version
+        id: bump
+        run: |
+          VERSION_FILE="VERSION"
+          if [ ! -f "$VERSION_FILE" ]; then
+            echo "1.0.0" > "$VERSION_FILE"
+          fi
+          current=$(tr -d '[:space:]' < "$VERSION_FILE")
+          major=$(echo "$current" | cut -d. -f1)
+          minor=$(echo "$current" | cut -d. -f2)
+          patch=$(echo "$current" | cut -d. -f3)
+          new_patch=$((patch + 1))
+          new_version="${major}.${minor}.${new_patch}"
+          echo "$new_version" > "$VERSION_FILE"
+          echo "version=${new_version}" >> "$GITHUB_OUTPUT"
+          echo "Bumped version to ${new_version}"
+
+      - name: Commit version bump and tag
+        run: |
+          git config user.name "Hermes Agent"
+          git config user.email "hermes@nousresearch.com"
+          git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git add VERSION
+          git commit -m "chore(release): bump version to ${VERSION} [skip ci]"
+          git tag "v${VERSION}"
+          git push origin main --tags
+        env:
+          VERSION: ${{ steps.bump.outputs.version }}
