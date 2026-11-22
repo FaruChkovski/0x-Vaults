@@ -41,6 +41,20 @@ Any agent can read this file to orient itself in one pass.
 | [[08_SKILLS/github]] | GitHub workflows: auth, repos, issues, PRs, CI/CD, code review |
 | [[08_SKILLS/machine-control-and-tooling]] | Local tool discovery, fast search, efficient browsing, machine control |
 | [[08_SKILLS/pdf-architect]] | PDF design, layout, visual QA with ReportLab + ImageMagick |
+| [[08_SKILLS/superpowers]] | Install and run the Superpowers agentic skills framework (obra/superpowers) as a Hermes plugin |
+| [[08_SKILLS/superpowers-brainstorming]] | Drawing out intent before building |
+| [[08_SKILLS/superpowers-writing-plans]] | Detailed implementation plans |
+| [[08_SKILLS/superpowers-executing-plans]] | Inline plan execution: one context, one final review |
+| [[08_SKILLS/superpowers-dispatching-parallel-agents]] | Concurrent subagent workflows |
+| [[08_SKILLS/superpowers-requesting-code-review]] | Pre-review checklist |
+| [[08_SKILLS/superpowers-receiving-code-review]] | Responding to feedback |
+| [[08_SKILLS/superpowers-using-git-worktrees]] | Parallel development branches |
+
+## Resources
+
+| Resource | Purpose |
+|----------|---------|
+| [[04_RESOURCES/superpowers-framework]] | Superpowers agentic skills framework & SD methodology by Prime Radiant |
 
 ## How Agents Use This Vault
 
