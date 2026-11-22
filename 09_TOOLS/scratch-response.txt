@@ -1,0 +1,9 @@
+PDF guide built and delivered.
+
+Created `04_RESOURCES/slides/` with 5 slide images copied from your Desktop.
+Wrote `99_SYSTEM/0x-Vaults-Guide.md` — full markdown guide with cover, vault overview, all 5 slides, architecture table, setup steps, plugins, operating loop, HITL rules, token telemetry, component reference, roadmap, and Discord share pitch.
+Built `99_SYSTEM/0x-Vaults-Guide.pdf` (4.4 MB, ReportLab) with professional cover, embedded slide images, and all guide sections.
+Copied PDF to `C:/Users/faruc/OneDrive/Desktop/0x-Vaults-Guide.pdf`.
+Wrote session log to `06_LOGS/2026-11-22_1400_hermes_pdf-guide.md` with exact tiktoken cl100k_base telemetry.
+
+Ready for Discord sharing → friend approval → GitHub publishing.
