@@ -49,6 +49,8 @@ Any agent can read this file to orient itself in one pass.
 | [[08_SKILLS/superpowers-requesting-code-review]] | Pre-review checklist |
 | [[08_SKILLS/superpowers-receiving-code-review]] | Responding to feedback |
 | [[08_SKILLS/superpowers-using-git-worktrees]] | Parallel development branches |
+| [[08_SKILLS/sketch]] | Throwaway HTML mockups: 2-3 design variants to compare |
+| [[08_SKILLS/web-frontend-edit]] | Edit local HTML/CSS/JS frontend files — layout, themes, buttons, visual design |
 
 ## Resources
 
