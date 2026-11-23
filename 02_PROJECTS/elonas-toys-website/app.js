@@ -301,7 +301,7 @@ function productCardHTML(p) {
         <p class="product-desc" style="font-size:0.85rem; color:var(--color-text-muted); margin:10px 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${escapeHtml(desc)}</p>
       </div>
       <div class="product-actions">
-        <button class="btn btn-accent btn-sm w-full mb-8" onclick="addToCart('${p.id}')">${state.lang === 'ar' ? 'إضافة إلى السلة' : 'Add to WhatsApp'}</button>
+        <button class="btn btn-accent btn-sm w-full mb-8" onclick="addToCart('${p.id}')">${state.lang === 'ar' ? 'إضافة إلى السلة' : 'Add to Cart'}</button>
         <button class="btn btn-ghost btn-sm w-full" onclick="openProductModal('${p.id}')" style="color:var(--color-text); border-color:var(--color-border);">${state.lang === 'ar' ? 'عرض التفاصيل' : 'View Details'}</button>
       </div>
     </article>

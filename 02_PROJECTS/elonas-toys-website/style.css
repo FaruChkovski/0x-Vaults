@@ -198,7 +198,7 @@ header {
   display: flex; align-items: center; justify-content: center;
 }
 .whatsapp-cta {
-  background: var(--color-mascot);
+  background: #10B981;
   color: #fff;
   padding: 10px 20px;
   border-radius: var(--radius-sm);
@@ -208,7 +208,7 @@ header {
   transition: background 0.2s, transform 0.1s;
   white-space: nowrap;
 }
-.whatsapp-cta:hover { background: #E85D1E; transform: translateY(-1px); }
+.whatsapp-cta:hover { background: #059669; transform: translateY(-1px); }
 .whatsapp-cta:active { transform: scale(0.97); }
 
 /* Mobile nav toggle */
