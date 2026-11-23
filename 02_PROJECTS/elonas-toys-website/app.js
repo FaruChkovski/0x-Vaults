@@ -45,8 +45,6 @@ const els = {
   cartTotal: document.getElementById('cartTotal'),
   modalOverlay: document.getElementById('modalOverlay'),
   searchInput: document.getElementById('searchInput'),
-  ageFilterContainer: document.getElementById('ageFilterContainer'),
-  categoryFilterContainer: document.getElementById('categoryFilterContainer'),
   productsGrid: document.getElementById('productsGrid'),
   viewGridBtn: document.getElementById('viewGridBtn'),
   viewListBtn: document.getElementById('viewListBtn'),
@@ -190,42 +188,47 @@ function applyLang() {
 
 // --- Filters ---
 function renderFilters() {
+  // Query fresh to avoid duplicate-ID issues between main area and modal
+  const ageContainer = document.getElementById('ageFilterContainer');
+  const catContainer = document.getElementById('categoryFilterContainer');
+  if (!ageContainer || !catContainer) return;
+
   // Age chips
-  els.ageFilterContainer.innerHTML = '<button class="chip active" data-filter="age" data-value="all">' + (state.lang === 'ar' ? 'جميع الأعمار' : 'All Ages') + '</button>';
-  state.ageBrackets.forEach(age => {
+  ageContainer.innerHTML = '<button class="chip active" data-filter="age" data-value="all">' + (state.lang === 'ar' ? 'جميع الأعمار' : 'All Ages') + '</button>';
+  (state.ageBrackets || []).forEach(age => {
     const btn = document.createElement('button');
     btn.className = 'chip';
     btn.dataset.filter = 'age';
     btn.dataset.value = age;
     btn.textContent = age;
-    els.ageFilterContainer.appendChild(btn);
+    ageContainer.appendChild(btn);
   });
   // Category chips
-  els.categoryFilterContainer.innerHTML = '<button class="chip active" data-filter="category" data-value="all">' + (state.lang === 'ar' ? 'جميع الأقسام' : 'All Categories') + '</button>';
-  state.categories.forEach(cat => {
+  catContainer.innerHTML = '<button class="chip active" data-filter="category" data-value="all">' + (state.lang === 'ar' ? 'جميع الأقسام' : 'All Categories') + '</button>';
+  (state.categories || []).forEach(cat => {
     const btn = document.createElement('button');
     btn.className = 'chip';
     btn.dataset.filter = 'category';
     btn.dataset.value = cat;
     btn.textContent = cat;
-    els.categoryFilterContainer.appendChild(btn);
+    catContainer.appendChild(btn);
   });
 
   // Chip click handlers
-  els.ageFilterContainer.addEventListener('click', (e) => {
+  ageContainer.addEventListener('click', (e) => {
     if (e.target.classList.contains('chip')) {
       const val = e.target.dataset.value;
       state.filters.age = val;
-      els.ageFilterContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      ageContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
       e.target.classList.add('active');
       renderProducts();
     }
   });
-  els.categoryFilterContainer.addEventListener('click', (e) => {
+  catContainer.addEventListener('click', (e) => {
     if (e.target.classList.contains('chip')) {
       const val = e.target.dataset.value;
       state.filters.category = val;
-      els.categoryFilterContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      catContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
       e.target.classList.add('active');
       renderProducts();
     }
