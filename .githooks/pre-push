@@ -1,21 +1,29 @@
 #!/usr/bin/env bash
-# Pre-push hook — blocks git push without a recorded HITL approval.
+# Pre-push hook — blocks git push without a verified HITL nonce approval.
 #
 # To enable: cp .githooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
 #
 # Before pushing:
-#   1. Create an approval file under 10_SECURITY/hitl-approvals/ (see README there)
-#   2. Run: HITL_APPROVAL=10_SECURITY/hitl-approvals/<file>.md git push
+#   1. Agent runs: scripts/hitl-gate.sh challenge push   → get a nonce
+#   2. Agent asks user in chat: "Push HITL nonce <nonce> — approve?"
+#   3. User confirms in chat ("approve", "go ahead", etc.)
+#   4. Agent writes approval file under 10_SECURITY/hitl-approvals/:
+#        approver: user
+#        action: push
+#        status: approved
+#        nonce: <the nonce from step 1>
+#   5. Run: HITL_APPROVAL=10_SECURITY/hitl-approvals/<file>.md git push
 
 set -euo pipefail
 
 APPROVAL_REF="${HITL_APPROVAL:-}"
 
-if [[ -z "$HITL_APPROVAL" ]]; then
+if [[ -z "$APPROVAL_REF" ]]; then
   echo "PRE-PUSH HITL BLOCKED: HITL_APPROVAL environment variable not set." >&2
-  echo "  Create an approval file under 10_SECURITY/hitl-approvals/ and run:" >&2
-  echo "    HITL_APPROVAL=10_SECURITY/hitl-approvals/<file>.md git push" >&2
+  echo "  Run: scripts/hitl-gate.sh challenge push to get a nonce," >&2
+  echo "  confirm it with the user in chat, then write an approval file and set HITL_APPROVAL." >&2
+  echo "  Example: HITL_APPROVAL=10_SECURITY/hitl-approvals/<file>.md git push" >&2
   exit 1
 fi
 
-exec scripts/hitl-gate.sh push "$HITL_APPROVAL"
+exec scripts/hitl-gate.sh verify push "$APPROVAL_REF"

@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
-# Pre-commit hook — blocks git commit without a recorded HITL approval.
+# Pre-commit hook — blocks git commit without a verified HITL nonce approval.
 #
 # To enable: cp .githooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
 #
 # Before committing:
-#   1. Create an approval file under 10_SECURITY/hitl-approvals/ (see README there)
-#   2. Run: HITL_APPROVAL=10_SECURITY/hitl-approvals/<file>.md git commit -m "..."
+#   1. Agent runs: scripts/hitl-gate.sh challenge commit   → get a nonce
+#   2. Agent asks user in chat: "Commit HITL nonce <nonce> — approve?"
+#   3. User confirms in chat ("approve", "go ahead", etc.)
+#   4. Agent writes approval file under 10_SECURITY/hitl-approvals/:
+#        approver: user
+#        action: commit
+#        status: approved
+#        nonce: <the nonce from step 1>
+#   5. Run: HITL_APPROVAL=10_SECURITY/hitl-approvals/<file>.md git commit -m "..."
 
 set -euo pipefail
 
@@ -13,9 +20,10 @@ APPROVAL_REF="${HITL_APPROVAL:-}"
 
 if [[ -z "$APPROVAL_REF" ]]; then
   echo "PRE-COMMIT HITL BLOCKED: HITL_APPROVAL environment variable not set." >&2
-  echo "  Create an approval file under 10_SECURITY/hitl-approvals/ and run:" >&2
-  echo "    HITL_APPROVAL=10_SECURITY/hitl-approvals/<file>.md git commit -m \"...\"" >&2
+  echo "  Run: scripts/hitl-gate.sh challenge commit to get a nonce," >&2
+  echo "  confirm it with the user in chat, then write an approval file and set HITL_APPROVAL." >&2
+  echo "  Example: HITL_APPROVAL=10_SECURITY/hitl-approvals/<file>.md git commit -m \"...\"" >&2
   exit 1
 fi
 
-exec scripts/hitl-gate.sh commit "$APPROVAL_REF"
+exec scripts/hitl-gate.sh verify commit "$APPROVAL_REF"
