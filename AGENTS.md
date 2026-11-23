@@ -20,12 +20,27 @@ All agents must also abide by [[10_SECURITY/security-policy]], which defines the
 
 ## Approval Workflow (HITL)
 
-```
+```text
 1. Agent proposes — states exactly which file(s) will change and what the change is
 2. User reviews — approves, rejects, or requests changes
 3. Agent executes — only after explicit "approve" or "go ahead" from the user
 4. Agent logs — writes the approved change to [[06_LOGS]] with the approval reference
 ```
+
+### Git Operations HITL Gates
+
+Every agent must obtain explicit user approval before:
+
+- **`git commit`** — no commit may be created without prior user sign-off
+- **`git push`** — no push to remote (e.g., GitHub) may be executed without prior user sign-off
+
+### Post-Push Log Report
+
+After every successful `git push` to GitHub, the agent must:
+
+- Write a session log entry to `[[06_LOGS]]` using `[[07_TEMPLATES/agent-log-template]]`
+- Reference the push (commit SHA, branch, tag if created) in the log
+- The log itself requires separate user approval before being written to the vault
 
 ## Agent Workflow
 

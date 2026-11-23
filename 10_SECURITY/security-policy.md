@@ -20,16 +20,19 @@ All agents must abide by this policy before any read or write operation in the v
 
 ### What requires approval
 
-| Action | Approval Required |
-|--------|-------------------|
-| Create a new note | ✅ Yes |
-| Edit or patch an existing note | ✅ Yes |
-| Delete a note | ✅ Yes |
-| Move or rename a note | ✅ Yes |
-| Update frontmatter | ✅ Yes |
-| Add or remove wikilinks | ✅ Yes |
-| Read-only access | ❌ No (agents may read freely) |
-| Save an incident log or security alert to [[06_LOGS]] or [[10_SECURITY]] | ✅ Yes |
+|| Action | Approval Required ||
+||--------|-------------------||
+|| Create a new note | ✅ Yes ||
+|| Edit or patch an existing note | ✅ Yes ||
+|| Delete a note | ✅ Yes ||
+|| Move or rename a note | ✅ Yes ||
+|| Update frontmatter | ✅ Yes ||
+|| Add or remove wikilinks | ✅ Yes ||
+|| **`git commit`** | ✅ Yes — user must approve before every commit ||
+|| **`git push`** | ✅ Yes — user must approve before every push to remote ||
+|| Read-only access | ❌ No (agents may read freely) ||
+|| Save an incident log or security alert to [[06_LOGS]] or [[10_SECURITY]] | ✅ Yes ||
+|| **Post-push log report** | ✅ Yes — after every push, a session log must be written to [[06_LOGS]] ||
 
 ### Approval workflow
 
