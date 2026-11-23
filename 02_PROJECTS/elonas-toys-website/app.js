@@ -30,7 +30,8 @@ let state = {
     category: 'all',
     keyword: ''
   },
-  viewMode: 'grid' // 'grid' or 'list'
+  viewMode: 'grid', // 'grid' or 'list',
+  whatsapp: '+96178702712'
 };
 
 // --- DOM Elements ---
@@ -60,36 +61,50 @@ async function init() {
   applyLang();
   updateCartUI();
 
-  // 2. Attach ALL event listeners immediately — buttons work even if product fetch fails
-  els.themeToggle.addEventListener('click', toggleTheme);
-  els.langToggle.addEventListener('click', toggleLang);
-  els.cartBadge.addEventListener('click', () => els.cartDrawer.classList.toggle('open'));
+  // 2. Attach ALL event listeners immediately — buttons work even if product fetch fails.
+  // Guard each against missing elements so init() never crashes on pages that
+  // don't have every control (e.g. index.html has no view-grid/list buttons).
+  if (els.themeToggle) els.themeToggle.addEventListener('click', toggleTheme);
+  if (els.langToggle) els.langToggle.addEventListener('click', toggleLang);
+  if (els.cartBadge && els.cartDrawer) {
+    els.cartBadge.addEventListener('click', () => els.cartDrawer.classList.toggle('open'));
+  }
 
   const searchTrigger = document.getElementById('searchTrigger');
   const modalClose = document.getElementById('modalClose');
-  searchTrigger.addEventListener('click', () => els.modalOverlay.classList.add('open'));
-  modalClose.addEventListener('click', () => els.modalOverlay.classList.remove('open'));
-  els.modalOverlay.addEventListener('click', (e) => {
-    if (e.target === els.modalOverlay) els.modalOverlay.classList.remove('open');
-  });
+  if (searchTrigger && els.modalOverlay) {
+    searchTrigger.addEventListener('click', () => els.modalOverlay.classList.add('open'));
+  }
+  if (modalClose && els.modalOverlay) {
+    modalClose.addEventListener('click', () => els.modalOverlay.classList.remove('open'));
+  }
+  if (els.modalOverlay) {
+    els.modalOverlay.addEventListener('click', (e) => {
+      if (e.target === els.modalOverlay) els.modalOverlay.classList.remove('open');
+    });
+  }
 
-  els.searchInput.addEventListener('input', (e) => {
-    state.filters.keyword = e.target.value.toLowerCase();
-    renderProducts();
-  });
+  if (els.searchInput) {
+    els.searchInput.addEventListener('input', (e) => {
+      state.filters.keyword = e.target.value.toLowerCase();
+      renderProducts();
+    });
+  }
 
-  els.viewGridBtn.addEventListener('click', () => setViewMode('grid'));
-  els.viewListBtn.addEventListener('click', () => setViewMode('list'));
+  if (els.viewGridBtn) els.viewGridBtn.addEventListener('click', () => setViewMode('grid'));
+  if (els.viewListBtn) els.viewListBtn.addEventListener('click', () => setViewMode('list'));
 
-  els.whatsappCheckout.addEventListener('click', whatsappCheckout);
-  els.copyNumberBtn.addEventListener('click', copyNumber);
+  if (els.whatsappCheckout) els.whatsappCheckout.addEventListener('click', whatsappCheckout);
+  if (els.copyNumberBtn) els.copyNumberBtn.addEventListener('click', copyNumber);
 
   // Close cart when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!els.cartBadge.contains(e.target) && !els.cartDrawer.contains(e.target)) {
-      els.cartDrawer.classList.remove('open');
-    }
-  });
+  if (els.cartBadge && els.cartDrawer) {
+    document.addEventListener('click', (e) => {
+      if (!els.cartBadge.contains(e.target) && !els.cartDrawer.contains(e.target)) {
+        els.cartDrawer.classList.remove('open');
+      }
+    });
+  }
 
   // 3. Load products (async, non-blocking — won't break buttons if it fails)
   try {
@@ -237,6 +252,8 @@ function renderFilters() {
 
 // --- Products ---
 window.renderProducts = function renderProducts() {
+  if (!els.productsGrid) return;
+
   const filtered = state.products.filter(p => {
     const ageMatch = state.filters.age === 'all' || p.ageBracket === state.filters.age;
     const catMatch = state.filters.category === 'all' || p.category === state.filters.category;
@@ -460,12 +477,12 @@ function openProductModal(productId) {
   document.getElementById('productModalOverlay').classList.add('open');
 }
 
-document.getElementById('productModalClose').addEventListener('click', () => {
-  document.getElementById('productModalOverlay').classList.remove('open');
+document.getElementById('productModalClose')?.addEventListener('click', () => {
+  document.getElementById('productModalOverlay')?.classList.remove('open');
 });
-document.getElementById('productModalOverlay').addEventListener('click', (e) => {
+document.getElementById('productModalOverlay')?.addEventListener('click', (e) => {
   if (e.target === document.getElementById('productModalOverlay')) {
-    document.getElementById('productModalOverlay').classList.remove('open');
+    document.getElementById('productModalOverlay')?.classList.remove('open');
   }
 });
 
