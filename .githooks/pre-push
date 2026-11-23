@@ -1,0 +1,29 @@
+#!/bin/bash
+# =============================================================================
+# HITL Pre-Push Hook
+# =============================================================================
+# Blocks `git push` unless a valid HITL approval file exists.
+#
+# Usage: ./scripts/hitl-gate.sh push <approval-file>
+#
+# Install:
+#   cp .githooks/pre-push .git/hooks/pre-push
+#   chmod +x .git/hooks/pre-push
+# =============================================================================
+
+set -euo pipefail
+
+APPROVAL_FILE="10_SECURITY/hitl-approvals/last-approval.json"
+
+echo "=== HITL Pre-Push Gate ==="
+
+if ! bash "$(git rev-parse --show-toplevel)/scripts/hitl-gate.sh" push "$APPROVAL_FILE"; then
+  echo ""
+  echo "HITL GATE: Push blocked."
+  echo "HITL GATE: Create a valid approval file at $APPROVAL_FILE with action 'push' and retry."
+  echo "HITL GATE: See 10_SECURITY/security-policy.md for the approval workflow."
+  exit 1
+fi
+
+echo "=== HITL Pre-Push Gate: PASSED ==="
+exit 0

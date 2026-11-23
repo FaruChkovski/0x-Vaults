@@ -1,0 +1,29 @@
+#!/bin/bash
+# =============================================================================
+# HITL Pre-Commit Hook
+# =============================================================================
+# Blocks `git commit` unless a valid HITL approval file exists.
+#
+# Usage: ./scripts/hitl-gate.sh commit <approval-file>
+#
+# Install:
+#   cp .githooks/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+# =============================================================================
+
+set -euo pipefail
+
+APPROVAL_FILE="10_SECURITY/hitl-approvals/last-approval.json"
+
+echo "=== HITL Pre-Commit Gate ==="
+
+if ! bash "$(git rev-parse --show-toplevel)/scripts/hitl-gate.sh" commit "$APPROVAL_FILE"; then
+  echo ""
+  echo "HITL GATE: Commit blocked."
+  echo "HITL GATE: Create a valid approval file at $APPROVAL_FILE with action 'commit' and retry."
+  echo "HITL GATE: See 10_SECURITY/security-policy.md for the approval workflow."
+  exit 1
+fi
+
+echo "=== HITL Pre-Commit Gate: PASSED ==="
+exit 0
