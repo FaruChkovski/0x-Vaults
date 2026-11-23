@@ -56,6 +56,32 @@ Every vault modification must be:
 
 ## Enforcement
 
+### HITL Gate (technical enforcement)
+
+Git operations are enforced by local hooks in `.githooks/`:
+
+- **`.githooks/pre-commit`** — runs `scripts/hitl-gate.sh commit <approval-file>` before every commit
+- **`.githooks/pre-push`** — runs `scripts/hitl-gate.sh push <approval-file>` before every push
+
+Each gate requires a valid approval file under `10_SECURITY/hitl-approvals/` that records:
+- `approver` — who approved (e.g. `user`)
+- `action` — `commit` or `push` (must match the operation)
+- `timestamp` — when approval was given
+- `files` — which files or scope
+- `source` — where approval was given (e.g. `chat`)
+
+Without a valid approval file, the git operation is blocked (exit 1).
+
+To enable hooks locally:
+
+```bash
+cp .githooks/pre-commit .git/hooks/pre-commit
+cp .githooks/pre-push .git/hooks/pre-push
+chmod +x .git/hooks/pre-commit .git/hooks/pre-push
+```
+
+### Policy enforcement (agent-level)
+
 Any agent that writes to the vault without prior user approval is in violation of this policy. Corrections are logged in `06_LOGS/` and reported to the user.
 
 ## Links
