@@ -31,7 +31,8 @@ let state = {
     keyword: ''
   },
   viewMode: 'grid', // 'grid' or 'list',
-  whatsapp: '+96178702712'
+  whatsapp: '+96178702712',
+  store: null
 };
 
 // --- DOM Elements ---
@@ -111,6 +112,7 @@ async function init() {
     const res = await fetch('products.json');
     const data = await res.json();
     state.products = data.products;
+    state.store = data.store;
     document.title = data.store.name;
   } catch (e) {
     console.error('Failed to load products:', e);
@@ -121,6 +123,7 @@ async function init() {
 
   renderFilters();
   renderProducts();
+  renderSpecialOffers();
 }
 
 // --- URL filter params ---
@@ -270,6 +273,17 @@ window.renderProducts = function renderProducts() {
     els.productsGrid.className = 'list-view';
     els.productsGrid.innerHTML = filtered.map(p => productListHTML(p)).join('');
   }
+}
+
+function renderSpecialOffers() {
+  const container = document.getElementById('specialOffers');
+  if (!container || !state.store?.specialOffers) return;
+
+  const offers = state.store.specialOffers
+    .map(id => state.products.find(p => p.id === id))
+    .filter(Boolean);
+
+  container.innerHTML = offers.map(p => productCardHTML(p)).join('');
 }
 
 function productCardHTML(p) {
