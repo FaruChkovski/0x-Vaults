@@ -7,3 +7,5 @@ Thumbs.db
 .venv/
 *.key
 *.pem
+# Test / prototype materials — never push
+02_PROJECTS/elonas-toys-website/_tests/
