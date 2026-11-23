@@ -314,6 +314,14 @@ header {
 .chip.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
 .chip:hover { border-color: var(--color-primary); }
 
+/* Product description — hidden by default, expanded on View Details */
+.product-desc.collapsed {
+  display: none !important;
+}
+.product-desc:not(.collapsed) {
+  display: block;
+}
+
 /* View toggle — segmented control */
 .view-toggle {
   display: inline-flex;
