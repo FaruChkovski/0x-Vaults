@@ -34,22 +34,14 @@ Every agent must obtain explicit user approval before:
 - **`git commit`** — no commit may be created without prior user sign-off
 - **`git push`** — no push to remote (e.g., GitHub) may be executed without prior user sign-off
 
-#### HITL Gate Enforcement
+#### HITL Gate Enforcement (active)
 
-Git operations are technically enforced by local hooks in `.githooks/`:
+Git operations are technically enforced by installed git hooks:
 
-- **`.githooks/pre-commit`** — runs `scripts/hitl-gate.sh commit <approval-file>` before every commit
-- **`.githooks/pre-push`** — runs `scripts/hitl-gate.sh push <approval-file>` before every push
+- **`.git/hooks/pre-commit`** — runs `scripts/hitl-gate.sh commit <approval-file>` before every commit
+- **`.git/hooks/pre-push`** — runs `scripts/hitl-gate.sh push <approval-file>` before every push
 
-Each gate requires a valid approval file under `10_SECURITY/hitl-approvals/` recording `approver`, `action`, `timestamp`, `files`, and `source`. Without it, the operation is blocked.
-
-To enable hooks locally:
-
-```bash
-cp .githooks/pre-commit .git/hooks/pre-commit
-cp .githooks/pre-push .git/hooks/pre-push
-chmod +x .git/hooks/pre-commit .git/hooks/pre-push
-```
+Each gate requires a valid approval file under `10_SECURITY/hitl-approvals/` recording `approver`, `action`, `timestamp`, `files`, and `source`. Without it, the operation is blocked (exit 1).
 
 ### Post-Push Log Report
 
