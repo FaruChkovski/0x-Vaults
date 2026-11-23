@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalog — Elona's Toys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Cairo:wght@400;700&family=Lalezar&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='white'/%3E%3Ctext x='50' y='60' font-size='50' text-anchor='middle' font-family='Arial'%3E%3C%2Ftext%3E%3C%2Fsvg%3E">
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <a href="index.html" class="logo"><span class="bear-icon">🧸</span><span>Elona's Toys</span></a>
+    <nav class="nav-links">
+      <a href="index.html" data-i18n="nav.home">Home</a>
+      <a href="catalog.html" data-i18n="nav.catalog">Catalog</a>
+      <a href="about.html" data-i18n="nav.about">About Us</a>
+      <a href="contact.html" data-i18n="nav.contact">Contact</a>
+      <a href="delivery.html" data-i18n="nav.delivery">Delivery Info</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <button class="search-trigger" id="searchTrigger" title="Search">🔍</button>
+    <div class="cart-badge" id="cartBadge" title="Your Cart">🛒<span class="cart-count" id="cartCount">0</span></div>
+    <button class="theme-toggle" id="themeToggle" title="Dark/Light Mode">🌙</button>
+    <button class="lang-toggle" id="langToggle" title="English / Arabic">EN / AR</button>
+    <a href="https://wa.me/96178702712" class="whatsapp-cta" target="_blank">💬 WhatsApp</a>
+    <button class="mobile-menu-toggle" title="Menu">☰</button>
+  </div>
+</header>
+
+<main class="container py-48">
+  <div class="section-header mb-32">
+    <h1 data-i18n="nav.catalog">Catalog</h1>
+    <p>Browse all our toys — filter by age, category, or search by name.</p>
+  </div>
+
+  <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:32px; flex-wrap:wrap;">
+    <div class="search-form" style="flex:1; min-width:280px;">
+      <input type="text" id="catalogSearch" placeholder="🔍 Search toys...">
+    </div>
+    <div style="font-weight:600; margin-top:6px; font-size:0.9rem;" data-i18n="filter.age">Age</div>
+    <div class="filter-chips" id="catalogAgeChips" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+    <div style="font-weight:600; margin-top:16px; margin-bottom:8px; font-size:0.9rem;" data-i18n="filter.category">Category</div>
+    <div class="filter-chips" id="catalogCategoryChips" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+    <div style="font-weight:600; color:var(--color-text-muted); font-size:0.9rem;" id="catalogResultCount">Showing all toys</div>
+    <div style="display:flex; gap:8px;">
+      <button class="btn btn-ghost btn-sm active" id="viewGridBtn" data-i18n="view.grid">Grid</button>
+      <button class="btn btn-ghost btn-sm" id="viewListBtn" data-i18n="view.list">List</button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-4" id="catalogProducts">
+    <!-- Products rendered by JS -->
+  </div>
+</main>
+
+<!-- Search Modal (shared with home) -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">×</button>
+    <h2>Search Toys</h2>
+    <div class="search-form">
+      <input type="text" id="searchInput" placeholder="Search by name, age, or category...">
+    </div>
+    <div style="font-weight:600; margin-bottom:12px;" data-i18n="filter.age">Filter by Age</div>
+    <div class="filter-chips" id="ageFilterContainer"></div>
+    <div style="font-weight:600; margin-top:16px; margin-bottom:12px;" data-i18n="filter.category">Filter by Category</div>
+    <div class="filter-chips" id="categoryFilterContainer"></div>
+  </div>
+</div>
+
+<!-- Cart Drawer -->
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3 data-i18n="cart.title">Your Cart</h3>
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('cartDrawer').classList.remove('open')">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total">Total: <span id="cartTotal">$0</span></div>
+    <button class="btn btn-accent w-full mb-16" id="whatsappCheckout" data-i18n="cart.checkout">Checkout via WhatsApp</button>
+    <button class="btn btn-ghost w-full" id="copyNumberBtn" title="Copy WhatsApp number">📋 Copy Number (+961 78 702 712)</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Added to cart 🧸</div>
+
+<script src="app.js"></script>
+<script>
+// Catalog-specific: parse URL params for pre-selected filters
+function initCatalog() {
+  const params = new URLSearchParams(window.location.search);
+  const ageParam = params.get('age');
+  const catParam = params.get('category');
+
+  // Apply pre-selected age filter
+  if (ageParam) {
+    const decoded = decodeURIComponent(ageParam);
+    const chip = [...document.querySelectorAll('#catalogAgeChips .chip, #ageFilterContainer .chip')]
+      .find(c => c.textContent === decoded);
+    if (chip) chip.click();
+  }
+  if (catParam) {
+    const decoded = decodeURIComponent(catParam);
+    const chip = [...document.querySelectorAll('#catalogCategoryChips .chip, #categoryFilterContainer .chip')]
+      .find(c => c.textContent === decoded);
+    if (chip) chip.click();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  init();
+  initCatalog();
+});
+
+// Override renderProducts for catalog to show result count
+const originalRenderProducts = window.renderProducts || null;
+// We'll hook into app.js renderProducts by redefining after load
+window.__catalogReady = false;
+const checkCatalog = setInterval(() => {
+  if (typeof window.renderProducts === 'function' && !window.__catalogReady) {
+    window.__catalogReady = true;
+    const orig = window.renderProducts;
+    window.renderProducts = function() {
+      orig();
+      const count = document.querySelectorAll('#catalogProducts .product-card').length;
+      document.getElementById('catalogResultCount').textContent = count === 1 ? '1 toy found' : count + ' toys found';
+    };
+    window.renderProducts();
+    clearInterval(checkCatalog);
+  }
+}, 50);
+</script>
+</body>
+</html>
