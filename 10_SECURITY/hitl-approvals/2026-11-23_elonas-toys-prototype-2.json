@@ -1,0 +1,22 @@
+{
+  "approver": "user",
+  "action": "commit+push",
+  "timestamp": "2026-11-23T22:15:00+02:00",
+  "files": [
+    "02_PROJECTS/elonas-toys-website/app.js",
+    "02_PROJECTS/elonas-toys-website/catalog.html",
+    "02_PROJECTS/elonas-toys-website/style.css",
+    "02_PROJECTS/elonas-toys-website/products.json",
+    "02_PROJECTS/elonas-toys-website/index.html",
+    "02_PROJECTS/elonas-toys-website/product-detail.html",
+    "02_PROJECTS/elonas-toys-website/about.html",
+    "02_PROJECTS/elonas-toys-website/contact.html",
+    "02_PROJECTS/elonas-toys-website/delivery.html",
+    "02_PROJECTS/elonas-toys-website/_INDEX.md",
+    "02_PROJECTS/elonas-toys-website/SPEC.md",
+    "02_PROJECTS/elonas-toys-website/DISCOVERY_NOTES.md",
+    "02_PROJECTS/elonas-toys-website/_tests/"
+  ],
+  "source": "chat-approval",
+  "description": "Elona's Toys website prototype 2 — all fixes applied: header buttons, expanded test products (21), sorted project folder, redesigned Grid/List toggle, polished product cards, catalog products render, age/category filter chips render, URL param filter pre-selection"
+}
