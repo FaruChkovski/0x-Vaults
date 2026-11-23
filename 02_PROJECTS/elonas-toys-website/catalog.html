@@ -40,12 +40,12 @@
 
   <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:32px; flex-wrap:wrap;">
     <div class="search-form" style="flex:1; min-width:280px;">
-      <input type="text" id="catalogSearch" placeholder="🔍 Search toys...">
+      <input type="text" id="searchInput" placeholder="🔍 Search toys...">
     </div>
-    <div style="font-weight:600; margin-top:6px; font-size:0.9rem;" data-i18n="filter.age">Age</div>
-    <div class="filter-chips" id="catalogAgeChips" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
-    <div style="font-weight:600; margin-top:16px; margin-bottom:8px; font-size:0.9rem;" data-i18n="filter.category">Category</div>
-    <div class="filter-chips" id="catalogCategoryChips" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+    <div style="font-weight:600; margin-top:6px; font-size:0.9rem;" data-i18n="filter.age">Filter by Age</div>
+    <div class="filter-chips" id="ageFilterContainer" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+    <div style="font-weight:600; margin-top:16px; margin-bottom:8px; font-size:0.9rem;" data-i18n="filter.category">Filter by Category</div>
+    <div class="filter-chips" id="categoryFilterContainer" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
   </div>
 
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
@@ -56,12 +56,12 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-4" id="catalogProducts">
+  <div class="grid grid-cols-4" id="productsGrid">
     <!-- Products rendered by JS -->
   </div>
 </main>
 
-<!-- Search Modal (shared with home) -->
+<!-- Search Modal -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <button class="modal-close" id="modalClose">×</button>
@@ -94,50 +94,5 @@
 <div class="toast" id="toast">Added to cart 🧸</div>
 
 <script src="app.js"></script>
-<script>
-// Catalog-specific: parse URL params for pre-selected filters
-function initCatalog() {
-  const params = new URLSearchParams(window.location.search);
-  const ageParam = params.get('age');
-  const catParam = params.get('category');
-
-  // Apply pre-selected age filter
-  if (ageParam) {
-    const decoded = decodeURIComponent(ageParam);
-    const chip = [...document.querySelectorAll('#catalogAgeChips .chip, #ageFilterContainer .chip')]
-      .find(c => c.textContent === decoded);
-    if (chip) chip.click();
-  }
-  if (catParam) {
-    const decoded = decodeURIComponent(catParam);
-    const chip = [...document.querySelectorAll('#catalogCategoryChips .chip, #categoryFilterContainer .chip')]
-      .find(c => c.textContent === decoded);
-    if (chip) chip.click();
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  init();
-  initCatalog();
-});
-
-// Override renderProducts for catalog to show result count
-const originalRenderProducts = window.renderProducts || null;
-// We'll hook into app.js renderProducts by redefining after load
-window.__catalogReady = false;
-const checkCatalog = setInterval(() => {
-  if (typeof window.renderProducts === 'function' && !window.__catalogReady) {
-    window.__catalogReady = true;
-    const orig = window.renderProducts;
-    window.renderProducts = function() {
-      orig();
-      const count = document.querySelectorAll('#catalogProducts .product-card').length;
-      document.getElementById('catalogResultCount').textContent = count === 1 ? '1 toy found' : count + ' toys found';
-    };
-    window.renderProducts();
-    clearInterval(checkCatalog);
-  }
-}, 50);
-</script>
 </body>
 </html>

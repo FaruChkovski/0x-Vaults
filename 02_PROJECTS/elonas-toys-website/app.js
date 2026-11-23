@@ -9,6 +9,22 @@ let state = {
   theme: localStorage.getItem('elona-theme') || 'light',
   cart: JSON.parse(localStorage.getItem('elona-cart') || '[]'),
   products: [],
+  ageBrackets: [
+    "0–12 Months",
+    "1–3 Years",
+    "3–5 Years",
+    "6–8 Years",
+    "9+ Years"
+  ],
+  categories: [
+    "Baby & Toddler",
+    "Dolls & Pretend Play",
+    "Cars & Action",
+    "Educational & STEM",
+    "Board Games & Puzzles",
+    "Outdoor & Ride-Ons",
+    "Kids Essentials"
+  ],
   filters: {
     age: 'all',
     category: 'all',
@@ -86,8 +102,30 @@ async function init() {
   } catch (e) {
     console.error('Failed to load products:', e);
   }
+
+  // 4. Apply pre-selected filters from URL params (?age=...&category=...)
+  applyUrlFilters();
+
   renderFilters();
   renderProducts();
+}
+
+// --- URL filter params ---
+function applyUrlFilters() {
+  const params = new URLSearchParams(window.location.search);
+  const ageParam = params.get('age');
+  const catParam = params.get('category');
+
+  if (ageParam) {
+    const decoded = decodeURIComponent(ageParam);
+    const match = state.ageBrackets.find(a => a === decoded);
+    if (match) state.filters.age = match;
+  }
+  if (catParam) {
+    const decoded = decodeURIComponent(catParam);
+    const match = state.categories.find(c => c === decoded);
+    if (match) state.filters.category = match;
+  }
 }
 
 // --- Theme ---
