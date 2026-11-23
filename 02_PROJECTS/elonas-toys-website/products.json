@@ -37,7 +37,7 @@
       "stock": "In Stock",
       "images": ["assets/placeholder-bear.png"],
       "description": "Soft cuddly teddy bear — perfect first friend for your little one.",
-      "descriptionAr": "دباديب ناعم ومم�وم — الصديق الأول المثالي لصغيرك."
+      "descriptionAr": "دباديب ناعم ومميز — الصديق الأول المثالي لصغيرك."
     },
     {
       "id": "p002",
@@ -170,6 +170,114 @@
       "images": ["assets/placeholder-bear.png"],
       "description": "Complete art set with paints, brushes, and canvas for young artists.",
       "descriptionAr": "مجموعة فنية كاملة مع ألوان وفرش وقماش للفنانين الصغار."
+    },
+    {
+      "id": "p013",
+      "name": "Musical Xylophone",
+      "nameAr": "خشابة موسيقية",
+      "price": 22,
+      "ageBracket": "1–3 Years",
+      "category": "Baby & Toddler",
+      "stock": "In Stock",
+      "images": ["assets/placeholder-bear.png"],
+      "description": "Colorful xylophone for early music exploration.",
+      "descriptionAr": "خشابة ملونة لاستكشاف الموسيقى في مرحلة الطفولة المبكرة."
+    },
+    {
+      "id": "p014",
+      "name": "Dino Action Figure",
+      "nameAr": "تمثال ديناصور",
+      "price": 15,
+      "ageBracket": "3–5 Years",
+      "category": "Cars & Action",
+      "stock": "In Stock",
+      "images": ["assets/placeholder-bear.png"],
+      "description": "Roaring T-Rex action figure for prehistoric adventures.",
+      "descriptionAr": "تمثال ديناصور تيرانوصور Rex للمغامرات ما قبل التاريخ."
+    },
+    {
+      "id": "p015",
+      "name": "Doctor Play Set",
+      "nameAr": "مجموعة طبيب لعب",
+      "price": 29,
+      "ageBracket": "3–5 Years",
+      "category": "Dolls & Pretend Play",
+      "stock": "In Stock",
+      "images": ["assets/placeholder-bear.png"],
+      "description": "Pretend doctor kit with stethoscope, syringe, and bandages.",
+      "descriptionAr": "مجموعة طبيب تخيلية مع سماعة أذن وحقنة ولاصقات."
+    },
+    {
+      "id": "p016",
+      "name": "Math Learning Board",
+      "nameAr": "لوحة تعلم الرياضيات",
+      "price": 34,
+      "ageBracket": "6–8 Years",
+      "category": "Educational & STEM",
+      "stock": "In Stock",
+      "images": ["assets/placeholder-bear.png"],
+      "description": "Wooden board for practicing addition, subtraction, and multiplication.",
+      "descriptionAr": "لوحة خشبية لممارسة الجمع والطرح والضرب."
+    },
+    {
+      "id": "p017",
+      "name": "Snakes and Ladders",
+      "nameAr": "ثعابين وسلالم",
+      "price": 18,
+      "ageBracket": "6–8 Years",
+      "category": "Board Games & Puzzles",
+      "stock": "Low Stock",
+      "images": ["assets/placeholder-bear.png"],
+      "description": "Classic family board game for game night fun.",
+      "descriptionAr": "لعبة لوحية عائلية كلاسيكية لليالي المرح."
+    },
+    {
+      "id": "p018",
+      "name": "Balance Bike",
+      "nameAr": "دراجة توازن",
+      "price": 75,
+      "ageBracket": "3–5 Years",
+      "category": "Outdoor & Ride-Ons",
+      "stock": "In Stock",
+      "images": ["assets/placeholder-bear.png"],
+      "description": "No-pedal balance bike to learn coordination before riding.",
+      "descriptionAr": "دراجة توازن بدون دوالات لتعلم التنسيق قبل الركوب."
+    },
+    {
+      "id": "p019",
+      "name": "Baby Teether Toy",
+      "nameAr": "لعبة تخسيس",
+      "price": 9,
+      "ageBracket": "0–12 Months",
+      "category": "Baby & Toddler",
+      "stock": "In Stock",
+      "images": ["assets/placeholder-bear.png"],
+      "description": "Safe silicone teether for teething babies.",
+      "descriptionAr": "لعاب سيليكون آمن للأطفال في مرحلة التسنين."
+    },
+    {
+      "id": "p020",
+      "name": "Remote Control Car",
+      "nameAr": "سيارة تحكم عن بعد",
+      "price": 55,
+      "ageBracket": "9+ Years",
+      "category": "Cars & Action",
+      "stock": "In Stock",
+      "images": ["assets/placeholder-bear.png"],
+      "description": "Fast RC car with working lights and sounds.",
+      "descriptionAr": "سيارة RC سريعة مع أضواء وأصوات تعمل."
+    },
+    {
+      "id": "p021",
+      "name": "Kids Lunch Box",
+      "nameAr": "صندوق غداء أطفال",
+      "price": 14,
+      "ageBracket": "3–5 Years",
+      "category": "Kids Essentials",
+      "stock": "In Stock",
+      "images": ["assets/placeholder-bear.png"],
+      "description": "Colorful insulated lunch box for school snacks.",
+      "descriptionAr": "صندوق غداء ملون معزول للوجبات المدرسية."
     }
   ]
 }

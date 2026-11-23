@@ -385,4 +385,8 @@ window.removeFromCart = removeFromCart;
 window.changeQty = changeQty;
 
 // --- Start ---
-document.addEventListener('DOMContentLoaded', init);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
