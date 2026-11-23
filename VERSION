@@ -1,4 +1,4 @@
-1.2.0
+1.2.1
 
 Patch details:
-- 2026-11-23: add ComfyUI and Media Use skills for AvA (creative design deep-dive)
+- 2026-11-23: remove ComfyUI skill (not usable in current state); keep Media Use skill for AvA

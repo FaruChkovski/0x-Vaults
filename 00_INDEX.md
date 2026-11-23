@@ -51,7 +51,6 @@ Any agent can read this file to orient itself in one pass.
 | [[08_SKILLS/superpowers-using-git-worktrees]] | Parallel development branches |
 | [[08_SKILLS/sketch]] | Throwaway HTML mockups: 2-3 design variants to compare |
 | [[08_SKILLS/web-frontend-edit]] | Edit local HTML/CSS/JS frontend files — layout, themes, buttons, visual design |
-| [[08_SKILLS/comfyui]] | Generate images, video, and audio via diffusion workflows (Stable Diffusion, Flux) |
 | [[08_SKILLS/media-use]] | Resolve, generate, and catalog media assets (icons, images, brand logos, voices) |
 
 ## Resources
