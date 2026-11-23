@@ -1,0 +1,7 @@
+{
+  "approver": "user",
+  "action": "commit+push",
+  "timestamp": "2026-11-23T12:45:00+02:00",
+  "files": [".github/workflows/version-bump.yml"],
+  "source": "chat-approval"
+}
