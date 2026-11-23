@@ -54,8 +54,6 @@ Every vault modification must be:
 - Agents must read `AGENTS.md` and this policy before acting
 - Direct file read/write on disk — no middleware bypasses this rule
 
-## Enforcement
-
 ### HITL Gate (technical enforcement)
 
 Git operations are enforced by local hooks in `.githooks/`:
@@ -83,6 +81,34 @@ chmod +x .git/hooks/pre-commit .git/hooks/pre-push
 ### Policy enforcement (agent-level)
 
 Any agent that writes to the vault without prior user approval is in violation of this policy. Corrections are logged in `06_LOGS/` and reported to the user.
+
+## Rule 4 — Tool Readiness Before Vault Entry
+
+No tool, skill, plugin, or external service may be added to any vault catalog (`09_TOOLS/`, `08_SKILLS/`, `[[09_TOOLS/plugins]]`) until all of the following are confirmed:
+
+1. **Tool Picking Evaluation** — `[[07_TEMPLATES/tool-picking]]` completed with decision `ADOPT`
+2. **Machine Runnable** — confirmed installable and runnable on this Windows 11 machine
+3. **API / Credential** — API key available, or tool is free/no-key required
+4. **Working Smoke Test** — a minimal real command has been run and output captured (see `[[07_TEMPLATES/tool-integration]]`)
+5. **HITL Approval** — user approval recorded under `[[10_SECURITY/hitl-approvals/]]` for adding the tool to the vault
+
+### Tool Readiness States
+
+| State | Meaning | Can Enter Vault? |
+|-------|---------|------------------|
+| `pending` | Picked but not yet installed/tested | ❌ No |
+| `verified` | Installed, smoke-tested, working on this machine | ✅ Yes |
+| `deprecated` | No longer works or has been removed | ❌ No |
+
+Every tool note under `09_TOOLS/` must carry a `readiness` field reflecting its current state.
+
+## Rule 5 — No Silent Tool Adds
+
+Tools must not be added to catalogs, indexes, or skill folders without:
+- A completed tool picking evaluation
+- A passing smoke test on this machine
+- A HITL approval file
+- An entry in the session log (`06_LOGS/`)
 
 ## Links
 
