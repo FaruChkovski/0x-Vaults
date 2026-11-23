@@ -1,41 +1,56 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" width="300" height="80" role="img" aria-label="Elona's Toys">
   <defs>
-    <filter id="logo-shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/>
+    <filter id="badge-shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.30"/>
+    </filter>
+    <filter id="bear-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#000" flood-opacity="0.20"/>
     </filter>
   </defs>
 
   <!-- White circular badge background -->
-  <circle cx="44" cy="40" r="34" fill="#ffffff" stroke="#f1f5f9" stroke-width="2" filter="url(#logo-shadow)"/>
+  <circle cx="46" cy="40" r="36" fill="#ffffff" stroke="#f8fafc" stroke-width="2.5" filter="url(#badge-shadow)"/>
 
-  <!-- Teddy bear head -->
-  <g transform="translate(44, 27)" filter="url(#logo-shadow)">
+  <!-- Teddy bear head (centered on badge) -->
+  <g transform="translate(46, 28)" filter="url(#bear-shadow)">
     <!-- Ears -->
-    <circle cx="-8" cy="-9" r="6" fill="#f59e0b"/>
-    <circle cx="8" cy="-9" r="6" fill="#f59e0b"/>
+    <circle cx="-11" cy="-10" r="8" fill="#d97706"/>
+    <circle cx="11" cy="-10" r="8" fill="#d97706"/>
+    <!-- Inner ears -->
+    <circle cx="-11" cy="-10" r="3.5" fill="#fbbf24"/>
+    <circle cx="11" cy="-10" r="3.5" fill="#fbbf24"/>
     <!-- Head -->
-    <circle cx="0" cy="0" r="11" fill="#f59e0b"/>
+    <circle cx="0" cy="1" r="13" fill="#f59e0b"/>
+    <!-- Snout -->
+    <ellipse cx="0" cy="5" rx="5.5" ry="4" fill="#fbbf24"/>
+    <!-- Nose -->
+    <circle cx="0" cy="2" r="2" fill="#1f2937"/>
+    <!-- Mouth -->
+    <path d="M-1.5 4 Q0 6 1.5 4" fill="none" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round"/>
     <!-- Eyes -->
-    <circle cx="-3" cy="-1" r="1.5" fill="#1f2937"/>
-    <circle cx="3" cy="-1" r="1.5" fill="#1f2937"/>
-    <!-- Snout / mouth -->
-    <path d="M-2 3 Q0 5 2 3" fill="none" stroke="#1f2937" stroke-width="1.6" stroke-linecap="round"/>
-    <ellipse cx="0" cy="2" rx="1.5" ry="1" fill="#1f2937"/>
+    <circle cx="-4" cy="-1.5" r="1.8" fill="#111827"/>
+    <circle cx="4" cy="-1.5" r="1.8" fill="#111827"/>
+    <!-- Eye highlights -->
+    <circle cx="-4.4" cy="-2" r="0.5" fill="#ffffff"/>
+    <circle cx="4.4" cy="-2" r="0.5" fill="#ffffff"/>
+    <!-- Cheeks -->
+    <circle cx="-7" cy="5" r="1.6" fill="#fdba74" opacity="0.7"/>
+    <circle cx="7" cy="5" r="1.6" fill="#fdba74" opacity="0.7"/>
   </g>
 
   <!-- Multicolored "Elona's Toys" text -->
-  <text x="100" y="52" font-family="'Permanent Marker', cursive" font-size="24" font-weight="700">
-    <tspan dx="0"    fill="#dc2626">E</tspan>
-    <tspan dx="16"  fill="#f59e0b">l</tspan>
-    <tspan dx="14"  fill="#10b981">o</tspan>
-    <tspan dx="18"  fill="#3b82f6">n</tspan>
-    <tspan dx="18"  fill="#a855f7">a</tspan>
-    <tspan dx="10"  fill="#ec4899">'</tspan>
-    <tspan dx="16"  fill="#f59e0b">s</tspan>
-    <tspan dx="22"  fill="#ffffff"> </tspan>
-    <tspan dx="20"  fill="#dc2626">T</tspan>
-    <tspan dx="20"  fill="#10b981">o</tspan>
-    <tspan dx="20"  fill="#3b82f6">y</tspan>
-    <tspan dx="18"  fill="#a855f7">s</tspan>
+  <text x="102" y="53" font-family="'Permanent Marker', cursive" font-size="25" font-weight="700">
+    <tspan dx="0" fill="#ef4444">E</tspan>
+    <tspan dx="18" fill="#f59e0b">l</tspan>
+    <tspan dx="16" fill="#10b981">o</tspan>
+    <tspan dx="20" fill="#3b82f6">n</tspan>
+    <tspan dx="20" fill="#a855f7">a</tspan>
+    <tspan dx="12" fill="#ec4899">'</tspan>
+    <tspan dx="18" fill="#f59e0b">s</tspan>
+    <tspan dx="26" fill="#ffffff"> </tspan>
+    <tspan dx="22" fill="#ef4444">T</tspan>
+    <tspan dx="22" fill="#10b981">o</tspan>
+    <tspan dx="22" fill="#3b82f6">y</tspan>
+    <tspan dx="20" fill="#a855f7">s</tspan>
   </text>
 </svg>
