@@ -258,15 +258,20 @@ window.renderProducts = function renderProducts() {
 function productCardHTML(p) {
   const name = state.lang === 'ar' && p.nameAr ? p.nameAr : p.name;
   const stockClass = p.stock.toLowerCase().replace(' ', '-');
+  const desc = state.lang === 'ar' && p.descriptionAr ? p.descriptionAr : p.description;
   return `
     <article class="card product-card fade-in" data-id="${p.id}">
       <div class="product-image">🧸</div>
       <span class="product-badge">${p.ageBracket}</span>
-      <div class="product-name">${escapeHtml(name)}</div>
-      <div class="product-stock ${stockClass}">${p.stock}</div>
-      <div class="product-price">$${p.price}</div>
+      <div class="product-info">
+        <div class="product-name">${escapeHtml(name)}</div>
+        <div class="product-stock ${stockClass}">${p.stock}</div>
+        <div class="product-price">$${p.price}</div>
+        <p class="product-desc" style="font-size:0.85rem; color:var(--color-text-muted); margin:10px 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${escapeHtml(desc)}</p>
+      </div>
       <div class="product-actions">
-        <button class="btn btn-accent btn-sm w-full" onclick="addToCart('${p.id}')">${state.lang === 'ar' ? 'إضافة إلى السلة' : 'Add to WhatsApp'}</button>
+        <button class="btn btn-accent btn-sm w-full mb-8" onclick="addToCart('${p.id}')">${state.lang === 'ar' ? 'إضافة إلى السلة' : 'Add to WhatsApp'}</button>
+        <button class="btn btn-ghost btn-sm w-full" onclick="openProductModal('${p.id}')" style="color:var(--color-text); border-color:var(--color-border);">${state.lang === 'ar' ? 'عرض التفاصيل' : 'View Details'}</button>
       </div>
     </article>
   `;
@@ -275,6 +280,7 @@ function productCardHTML(p) {
 function productListHTML(p) {
   const name = state.lang === 'ar' && p.nameAr ? p.nameAr : p.name;
   const stockClass = p.stock.toLowerCase().replace(' ', '-');
+  const desc = state.lang === 'ar' && p.descriptionAr ? p.descriptionAr : p.description;
   return `
     <div class="card product-card fade-in" style="display:flex; align-items:center; gap:16px;" data-id="${p.id}">
       <div class="product-image" style="width:80px; height:80px; font-size:2.5rem;">🧸</div>
@@ -282,9 +288,13 @@ function productListHTML(p) {
         <span class="product-badge">${p.ageBracket}</span>
         <div class="product-name" style="font-size:1rem;">${escapeHtml(name)}</div>
         <div class="product-stock ${stockClass}" style="font-size:0.8rem;">${p.stock}</div>
+        <p class="product-desc" style="font-size:0.8rem; color:var(--color-text-muted); margin:6px 0;">${escapeHtml(desc)}</p>
       </div>
       <div class="product-price">$${p.price}</div>
-      <button class="btn btn-accent btn-sm" onclick="addToCart('${p.id}')">${state.lang === 'ar' ? 'إضافة' : 'Add'}</button>
+      <div style="display:flex; gap:8px; flex-direction:column;">
+        <button class="btn btn-accent btn-sm" onclick="addToCart('${p.id}')">${state.lang === 'ar' ? 'إضافة' : 'Add'}</button>
+        <button class="btn btn-ghost btn-sm" onclick="openProductModal('${p.id}')" style="color:var(--color-text); border-color:var(--color-border);">${state.lang === 'ar' ? 'تفاصيل' : 'Details'}</button>
+      </div>
     </div>
   `;
 }
@@ -416,10 +426,54 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+// --- Product Detail Modal ---
+function openProductModal(productId) {
+  const p = state.products.find(prod => prod.id === productId);
+  if (!p) return;
+  const name = state.lang === 'ar' && p.nameAr ? p.nameAr : p.name;
+  const desc = state.lang === 'ar' && p.descriptionAr ? p.descriptionAr : p.description;
+  const stockClass = p.stock.toLowerCase().replace(' ', '-');
+  const content = document.getElementById('productModalContent');
+  content.innerHTML = `
+    <div style="text-align:center;">
+      <div style="font-size:4rem; margin-bottom:16px;">🧸</div>
+      <h2 style="font-family:var(--font-heading); color:var(--color-primary); margin-bottom:8px;">${escapeHtml(name)}</h2>
+      <span class="product-badge">${p.ageBracket}</span>
+      <span class="product-stock ${stockClass}" style="margin-left:8px;">${p.stock}</span>
+    </div>
+    <p style="color:var(--color-text-muted); line-height:1.7; margin:20px 0;">${escapeHtml(desc)}</p>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding:16px; background:var(--color-surface); border-radius:var(--radius-sm); border:1px solid var(--color-border);">
+      <div>
+        <div style="font-size:0.85rem; color:var(--color-text-muted);">Price</div>
+        <div style="font-size:1.5rem; font-weight:700; color:var(--color-primary);">$${p.price}</div>
+      </div>
+      <div>
+        <div style="font-size:0.85rem; color:var(--color-text-muted);">Category</div>
+        <div style="font-size:1rem; font-weight:600;">${escapeHtml(p.category)}</div>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px;">
+      <button class="btn btn-accent" style="flex:1;" onclick="addToCart('${p.id}')">${state.lang === 'ar' ? 'إضافة إلى السلة' : 'Add to Cart'}</button>
+      <a href="https://wa.me/${state.whatsapp.replace(/\+/g, '').replace(/\s/g, '')}?text=${encodeURIComponent(`I want to order ${name} for $${p.price} from Elona's Toys`)}" class="btn btn-primary" target="_blank">${state.lang === 'ar' ? 'طلب عبر واتساب' : 'Order via WhatsApp'}</a>
+    </div>
+  `;
+  document.getElementById('productModalOverlay').classList.add('open');
+}
+
+document.getElementById('productModalClose').addEventListener('click', () => {
+  document.getElementById('productModalOverlay').classList.remove('open');
+});
+document.getElementById('productModalOverlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('productModalOverlay')) {
+    document.getElementById('productModalOverlay').classList.remove('open');
+  }
+});
+
 // Make cart functions global for inline onclick handlers
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.changeQty = changeQty;
+window.openProductModal = openProductModal;
 
 // --- Start ---
 if (document.readyState === 'loading') {
