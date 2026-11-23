@@ -41,29 +41,16 @@ const els = {
 
 // --- Init ---
 async function init() {
+  // 1. Apply theme and language immediately (no dependencies)
   applyTheme();
   applyLang();
   updateCartUI();
 
-  // Load products
-  try {
-    const res = await fetch('products.json');
-    const data = await res.json();
-    state.products = data.products;
-    document.title = data.store.name;
-  } catch (e) {
-    console.error('Failed to load products:', e);
-  }
-
-  renderFilters();
-  renderProducts();
-
-  // --- Event Listeners ---
+  // 2. Attach ALL event listeners immediately — buttons work even if product fetch fails
   els.themeToggle.addEventListener('click', toggleTheme);
   els.langToggle.addEventListener('click', toggleLang);
   els.cartBadge.addEventListener('click', () => els.cartDrawer.classList.toggle('open'));
 
-  // Search modal
   const searchTrigger = document.getElementById('searchTrigger');
   const modalClose = document.getElementById('modalClose');
   searchTrigger.addEventListener('click', () => els.modalOverlay.classList.add('open'));
@@ -72,26 +59,35 @@ async function init() {
     if (e.target === els.modalOverlay) els.modalOverlay.classList.remove('open');
   });
 
-  // Search input
   els.searchInput.addEventListener('input', (e) => {
     state.filters.keyword = e.target.value.toLowerCase();
     renderProducts();
   });
 
-  // View toggle
   els.viewGridBtn.addEventListener('click', () => setViewMode('grid'));
   els.viewListBtn.addEventListener('click', () => setViewMode('list'));
 
-  // WhatsApp checkout
   els.whatsappCheckout.addEventListener('click', whatsappCheckout);
   els.copyNumberBtn.addEventListener('click', copyNumber);
 
-  // Close cart when clicking outside (optional)
+  // Close cart when clicking outside
   document.addEventListener('click', (e) => {
     if (!els.cartBadge.contains(e.target) && !els.cartDrawer.contains(e.target)) {
       els.cartDrawer.classList.remove('open');
     }
   });
+
+  // 3. Load products (async, non-blocking — won't break buttons if it fails)
+  try {
+    const res = await fetch('products.json');
+    const data = await res.json();
+    state.products = data.products;
+    document.title = data.store.name;
+  } catch (e) {
+    console.error('Failed to load products:', e);
+  }
+  renderFilters();
+  renderProducts();
 }
 
 // --- Theme ---
