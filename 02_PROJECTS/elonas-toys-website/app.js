@@ -28,8 +28,15 @@ let state = {
   filters: {
     age: 'all',
     category: 'all',
-    keyword: ''
+    keyword: '',
+    budget: 'all'
   },
+  budgetRanges: [
+    { label: 'Under $20', min: null, max: 20 },
+    { label: '$20–$40', min: 20, max: 40 },
+    { label: '$40–$60', min: 40, max: 60 },
+    { label: '$60+', min: 60, max: null }
+  ],
   viewMode: 'grid', // 'grid' or 'list',
   whatsapp: '+96178702712',
   store: null
@@ -191,7 +198,7 @@ function applyLang() {
       'section.socials': 'تابعونا', 'section.feedback': 'آراء العملاء',
       'section.location': 'قم بزيارتنا', 'footer.rights': '© 2026 ألعابilonا — خلدة، لبنان',
       'cart.title': 'عربة التسوق', 'cart.empty': 'عربتك في انتظارك 🧸', 'cart.checkout': 'الدفع عبر واتساب',
-      'filter.age': 'تصفية حسب العمر', 'filter.category': 'تصفية حسب القسم',
+      'filter.age': 'تصفية حسب العمر', 'filter.category': 'تصفية حسب القسم', 'filter.budget': 'تصفية حسب الميزانية',
       'view.grid': 'عرض شبكي', 'view.list': 'عرض قائمة',
       'copy.success': 'تم نسخ الرقم!', 'toast.added': 'أضيف إلى السلة 🧸'
     }
@@ -231,6 +238,28 @@ function renderFilters() {
     btn.textContent = cat;
     catContainer.appendChild(btn);
   });
+  // Budget chips
+  const budgetContainer = document.getElementById('budgetFilterContainer');
+  if (budgetContainer) {
+    budgetContainer.innerHTML = '<button class="chip active" data-filter="budget" data-value="all">' + (state.lang === 'ar' ? 'جميع الميزانيات' : 'All Budgets') + '</button>';
+    (state.budgetRanges || []).forEach(range => {
+      const btn = document.createElement('button');
+      btn.className = 'chip';
+      btn.dataset.filter = 'budget';
+      btn.dataset.value = range.label;
+      btn.textContent = range.label;
+      budgetContainer.appendChild(btn);
+    });
+    budgetContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('chip')) {
+        const val = e.target.dataset.value;
+        state.filters.budget = val;
+        budgetContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        e.target.classList.add('active');
+        renderProducts();
+      }
+    });
+  }
 
   // Chip click handlers
   ageContainer.addEventListener('click', (e) => {
@@ -263,7 +292,15 @@ window.renderProducts = function renderProducts() {
     const kwMatch = state.filters.keyword === '' ||
       p.name.toLowerCase().includes(state.filters.keyword) ||
       (p.nameAr && p.nameAr.toLowerCase().includes(state.filters.keyword));
-    return ageMatch && catMatch && kwMatch;
+    let budgetMatch = true;
+    if (state.filters.budget !== 'all') {
+      const range = state.budgetRanges.find(r => r.label === state.filters.budget);
+      if (range) {
+        if (range.min !== null && p.price < range.min) budgetMatch = false;
+        if (range.max !== null && p.price > range.max) budgetMatch = false;
+      }
+    }
+    return ageMatch && catMatch && kwMatch && budgetMatch;
   });
 
   if (state.viewMode === 'grid') {
