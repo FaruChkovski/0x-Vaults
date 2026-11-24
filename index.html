@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elona's Toys — Your One-Stop Kids Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Cairo:wght@400;700&family=Lalezar&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+<!-- Header -->
+<header>
+  <div class="header-left">
+    <a href="index.html" class="logo">
+      <img src="assets/logo.png" alt="Elona's Toys logo">
+      <span class="brand-text">
+        <span class="c1">E</span><span class="c2">l</span><span class="c3">o</span><span class="c4">n</span><span class="c5">a</span><span class="c6">'</span><span class="c7">s</span>
+        <span class="c7"> </span><span class="c8">T</span><span class="c9">o</span><span class="c10">y</span><span class="c11">s</span>
+      </span>
+    </a>
+    <nav class="nav-links">
+      <a href="catalog.html" data-i18n="nav.catalog">Catalog</a>
+      <a href="about.html" data-i18n="nav.about">About Us</a>
+      <a href="contact.html" data-i18n="nav.contact">Contact</a>
+      <a href="delivery.html" data-i18n="nav.delivery">Delivery Info</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <button class="search-trigger" id="searchTrigger" title="Search">🔍</button>
+    <div class="cart-badge" id="cartBadge" title="Your Cart">🛒<span class="cart-count" id="cartCount">0</span></div>
+    <button class="theme-toggle" id="themeToggle" title="Dark/Light Mode">🌙</button>
+    <button class="lang-toggle" id="langToggle" title="English / Arabic">EN / AR</button>
+    <a href="https://wa.me/96178702712" class="whatsapp-cta" target="_blank">💬 WhatsApp</a>
+    <button class="mobile-menu-toggle" title="Menu">☰</button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1 class="brand-text">
+      <span class="c1">E</span><span class="c2">l</span><span class="c3">o</span><span class="c4">n</span><span class="c5">a</span><span class="c6">'</span><span class="c7">s</span>
+      <span class="c7"> </span><span class="c8">T</span><span class="c9">o</span><span class="c10">y</span><span class="c11">s</span>
+    </h1>
+    <p data-i18n="hero.tagline">Your One-Stop Kids Store — Toys & Essentials — Quality You Can Trust</p>
+    <div class="hero-actions">
+      <a href="catalog.html" class="btn btn-primary" data-i18n="hero.shop">Shop Toys</a>
+      <a href="https://wa.me/96178702712" class="whatsapp-cta" target="_blank">💬 WhatsApp Us</a>
+    </div>
+  </div>
+  <div class="mascot-bob">🧸</div>
+</section>
+
+<!-- Search by Age & Category -->
+<section class="py-48 container">
+  <div class="section-header mb-48">
+    <h2 data-i18n="section.search">Search by Age &amp; Category</h2>
+    <p>Find the perfect toy for your child's age and interests.</p>
+  </div>
+  <div class="grid grid-cols-4">
+    <a href="catalog.html?age=0%E2%80%9312%20Months" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">👶</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">0–12 Months</h3>
+    </a>
+    <a href="catalog.html?age=1%E2%80%933%20Years" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">🧸</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">1–3 Years</h3>
+    </a>
+    <a href="catalog.html?age=3%E2%80%935%20Years" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">🎨</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">3–5 Years</h3>
+    </a>
+    <a href="catalog.html?age=6%E2%80%938%20Years" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">🚗</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">6–8 Years</h3>
+    </a>
+    <a href="catalog.html?age=9%2B%20Years" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">🏆</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">9+ Years</h3>
+    </a>
+  </div>
+</section>
+
+<!-- Special Offers -->
+<section class="py-48 container">
+  <div class="section-header mb-48">
+    <h2 data-i18n="section.special">Special Offers</h2>
+    <p>Limited-time deals on your favorite toys.</p>
+  </div>
+  <div class="grid grid-cols-4" id="specialOffers">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="py-48 container">
+  <div class="section-header mb-48">
+    <h2 data-i18n="section.categories">Categories</h2>
+    <p>Browse all our toy categories.</p>
+  </div>
+  <div class="grid grid-cols-4">
+    <a href="catalog.html?category=Baby%20%26%20Toddler" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">👶</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">Baby &amp; Toddler</h3>
+    </a>
+    <a href="catalog.html?category=Dolls%20%26%20Pretend%20Play" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">🎭</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">Dolls &amp; Pretend</h3>
+    </a>
+    <a href="catalog.html?category=Cars%20%26%20Action" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">🚗</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">Cars &amp; Action</h3>
+    </a>
+    <a href="catalog.html?category=Educational%20%26%20STEM" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">🧠</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">Educational &amp; STEM</h3>
+    </a>
+    <a href="catalog.html?category=Board%20Games%20%26%20Puzzles" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">🧩</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">Board Games &amp; Puzzles</h3>
+    </a>
+    <a href="catalog.html?category=Outdoor%20%26%20Ride-Ons" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">🚲</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">Outdoor &amp; Ride-Ons</h3>
+    </a>
+    <a href="catalog.html?category=Kids%20Essentials" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
+      <div style="font-size:3rem; margin-bottom:12px;">🎒</div>
+      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">Kids Essentials</h3>
+    </a>
+  </div>
+</section>
+
+<!-- Socials -->
+<section class="py-48 container text-center">
+  <div class="section-header mb-32">
+    <h2 data-i18n="section.socials">Follow Us</h2>
+    <p>See our toys in action on Instagram and TikTok.</p>
+  </div>
+  <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
+    <a href="https://instagram.com/elonastoys" class="btn btn-ghost" target="_blank">📸 Instagram</a>
+    <a href="https://tiktok.com/@elonastoys" class="btn btn-ghost" target="_blank">🎵 TikTok</a>
+  </div>
+</section>
+
+<!-- Customer Feedbacks -->
+<section class="py-48 container">
+  <div class="section-header mb-48">
+    <h2 data-i18n="section.feedback">Customer Feedbacks</h2>
+    <p>What parents are saying about Elona's Toys.</p>
+  </div>
+  <div class="grid grid-cols-4">
+    <div class="card text-center fade-in">
+      <div style="font-size:2.5rem; margin-bottom:12px;">⭐⭐⭐⭐⭐</div>
+      <p style="font-style:italic; color:var(--color-text-muted);">"Best toy store in Khaldeh! My kids love everything here."</p>
+      <p style="font-weight:700; color:var(--color-primary); margin-top:8px;">— Layla, Khaldeh</p>
+    </div>
+    <div class="card text-center fade-in">
+      <div style="font-size:2.5rem; margin-bottom:12px;">⭐⭐⭐⭐⭐</div>
+      <p style="font-style:italic; color:var(--color-text-muted);">"Fast delivery across Lebanon and great quality toys."</p>
+      <p style="font-weight:700; color:var(--color-primary); margin-top:8px;">— Omar, Beirut</p>
+    </div>
+    <div class="card text-center fade-in">
+      <div style="font-size:2.5rem; margin-bottom:12px;">⭐⭐⭐⭐⭐</div>
+      <p style="font-style:italic; color:var(--color-text-muted);">"The teddy bears are absolutely adorable!"</p>
+      <p style="font-weight:700; color:var(--color-primary); margin-top:8px;">— Sara, Sidon</p>
+    </div>
+    <div class="card text-center fade-in">
+      <div style="font-size:2.5rem; margin-bottom:12px;">⭐⭐⭐⭐⭐</div>
+      <p style="font-style:italic; color:var(--color-text-muted);">"WhatsApp ordering made it so easy."</p>
+      <p style="font-weight:700; color:var(--color-primary); margin-top:8px;">— Ali, Tripoli</p>
+    </div>
+  </div>
+</section>
+
+<!-- Location -->
+<section class="py-48 container">
+  <div class="section-header mb-48">
+    <h2 data-i18n="section.location">Visit Us</h2>
+    <p>Find us in Khaldeh, right beside Rammal Supermarket.</p>
+  </div>
+  <div class="card" style="max-width:500px; margin:0 auto;">
+    <div style="font-size:2rem; margin-bottom:12px;">📍</div>
+    <h3 style="font-family:var(--font-heading); color:var(--color-primary); margin-bottom:8px;">Elona's Toys</h3>
+    <p>Khaldeh, facing/beside Rammal Supermarket<br>(QFPH+QQV, Khalde), Lebanon</p>
+    <p><strong>📞 +961 78 702 712</strong></p>
+    <p>Monday – Sunday, 9:00 AM – 9:30 PM</p>
+    <p style="margin-top:12px;">Delivery available across Lebanon 🇱🇧</p>
+  </div>
+</section>
+
+<!-- Search Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">×</button>
+    <h2>Search Toys</h2>
+    <div class="search-form">
+      <input type="text" id="modalSearchInput" placeholder="Search by name, age, or category...">
+    </div>
+    <div style="font-weight:600; margin-bottom:12px;" data-i18n="filter.age">Filter by Age</div>
+    <div class="filter-chips" id="modalAgeFilterContainer"></div>
+    <div style="font-weight:600; margin-top:16px; margin-bottom:12px;" data-i18n="filter.category">Filter by Category</div>
+    <div class="filter-chips" id="modalCategoryFilterContainer"></div>
+  </div>
+</div>
+
+<!-- Cart Drawer -->
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3 data-i18n="cart.title">Your Cart</h3>
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('cartDrawer').classList.remove('open')">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total">Total: <span id="cartTotal">$0</span></div>
+    <button class="btn btn-accent w-full mb-16" id="whatsappCheckout" data-i18n="cart.checkout">Checkout via WhatsApp</button>
+    <button class="btn btn-ghost w-full" id="copyNumberBtn" title="Copy WhatsApp number">📋 Copy Number (+961 78 702 712)</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Added to cart 🧸</div>
+
+<script src="app.js"></script>
+</body>
+</html>

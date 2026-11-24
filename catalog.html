@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalog — Elona's Toys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Cairo:wght@400;700&family=Lalezar&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <a href="index.html" class="logo">
+      <img src="assets/logo.png" alt="Elona's Toys logo">
+      <span class="brand-text">
+        <span class="c1">E</span><span class="c2">l</span><span class="c3">o</span><span class="c4">n</span><span class="c5">a</span><span class="c6">'</span><span class="c7">s</span>
+        <span class="c7"> </span><span class="c8">T</span><span class="c9">o</span><span class="c10">y</span><span class="c11">s</span>
+      </span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" data-i18n="nav.home">Home</a>
+      <a href="catalog.html" data-i18n="nav.catalog">Catalog</a>
+      <a href="about.html" data-i18n="nav.about">About Us</a>
+      <a href="contact.html" data-i18n="nav.contact">Contact</a>
+      <a href="delivery.html" data-i18n="nav.delivery">Delivery Info</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <button class="search-trigger" id="searchTrigger" title="Search">🔍</button>
+    <div class="cart-badge" id="cartBadge" title="Your Cart">🛒<span class="cart-count" id="cartCount">0</span></div>
+    <button class="theme-toggle" id="themeToggle" title="Dark/Light Mode">🌙</button>
+    <button class="lang-toggle" id="langToggle" title="English / Arabic">EN / AR</button>
+    <a href="https://wa.me/96178702712" class="whatsapp-cta" target="_blank">💬 WhatsApp</a>
+    <button class="mobile-menu-toggle" title="Menu">☰</button>
+  </div>
+</header>
+
+<main class="container py-48">
+  <div class="section-header mb-32">
+    <h1 data-i18n="nav.catalog">Catalog</h1>
+    <p>Browse all our toys — filter by age, category, or search by name.</p>
+  </div>
+
+  <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:32px; flex-wrap:wrap;">
+    <div class="search-form" style="flex:1; min-width:280px;">
+      <input type="text" id="searchInput" placeholder="🔍 Search toys...">
+    </div>
+    <div style="font-weight:600; margin-top:6px; font-size:0.9rem;" data-i18n="filter.age">Filter by Age</div>
+    <div class="filter-chips" id="ageFilterContainer" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+    <div style="font-weight:600; margin-top:16px; margin-bottom:8px; font-size:0.9rem;" data-i18n="filter.category">Filter by Category</div>
+    <div class="filter-chips" id="categoryFilterContainer" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+    <div style="font-weight:600; margin-top:16px; margin-bottom:8px; font-size:0.9rem;" data-i18n="filter.budget">Filter by Budget</div>
+    <div class="filter-chips" id="budgetFilterContainer" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+    <div style="font-weight:600; color:var(--color-text-muted); font-size:0.9rem;" id="catalogResultCount">Showing all toys</div>
+    <div style="display:flex; gap:8px;">
+      <button class="view-btn active" id="viewGridBtn" data-i18n="view.grid">Grid</button>
+      <button class="view-btn" id="viewListBtn" data-i18n="view.list">List</button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-4" id="productsGrid">
+    <!-- Products rendered by JS -->
+  </div>
+</main>
+
+<!-- Search Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">×</button>
+    <h2>Search Toys</h2>
+    <div class="search-form">
+      <input type="text" id="modalSearchInput" placeholder="Search by name, age, or category...">
+    </div>
+    <div style="font-weight:600; margin-bottom:12px;" data-i18n="filter.age">Filter by Age</div>
+    <div class="filter-chips" id="modalAgeFilterContainer"></div>
+    <div style="font-weight:600; margin-top:16px; margin-bottom:12px;" data-i18n="filter.category">Filter by Category</div>
+    <div class="filter-chips" id="modalCategoryFilterContainer"></div>
+    <div style="font-weight:600; margin-top:16px; margin-bottom:12px;" data-i18n="filter.budget">Filter by Budget</div>
+    <div class="filter-chips" id="modalBudgetFilterContainer"></div>
+  </div>
+</div>
+
+<!-- Cart Drawer -->
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3 data-i18n="cart.title">Your Cart</h3>
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('cartDrawer').classList.remove('open')">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total">Total: <span id="cartTotal">$0</span></div>
+    <button class="btn btn-accent w-full mb-16" id="whatsappCheckout" data-i18n="cart.checkout">Checkout via WhatsApp</button>
+    <button class="btn btn-ghost w-full" id="copyNumberBtn" title="Copy WhatsApp number">📋 Copy Number (+961 78 702 712)</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Added to cart 🧸</div>
+
+<!-- Product Detail Modal -->
+<div class="modal-overlay" id="productModalOverlay">
+  <div class="modal" style="max-width:600px;">
+    <button class="modal-close" id="productModalClose">×</button>
+    <div id="productModalContent">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
