@@ -134,17 +134,17 @@ header {
   align-items: center;
   gap: 2px;
 }
-.brand-text .c1 { color: #dc2626; }
-.brand-text .c2 { color: #f59e0b; }
+.brand-text .c1 { color: #3b82f6; }
+.brand-text .c2 { color: #dc2626; }
 .brand-text .c3 { color: #10b981; }
 .brand-text .c4 { color: #3b82f6; }
 .brand-text .c5 { color: #a855f7; }
-.brand-text .c6 { color: #ec4899; }
-.brand-text .c7 { color: #ffffff; }
-.brand-text .c8 { color: #dc2626; }
-.brand-text .c9 { color: #10b981; }
-.brand-text .c10 { color: #3b82f6; }
-.brand-text .c11 { color: #a855f7; }
+.brand-text .c6 { color: #f59e0b; }
+.brand-text .c7 { color: #f59e0b; }
+.brand-text .c8 { color: #ef4444; }
+.brand-text .c9 { color: #3b82f6; }
+.brand-text .c10 { color: #10b981; }
+.brand-text .c11 { color: #f59e0b; }
 .nav-links { display: flex; gap: 24px; }
 .nav-links a {
   color: var(--color-text);
