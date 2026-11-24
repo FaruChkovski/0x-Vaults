@@ -258,6 +258,41 @@ header {
     padding: 10px;
     display: block;
   }
+
+  /* --- Mobile header: prevent crowding --- */
+  header {
+    padding: 10px 16px;
+  }
+  .header-left, .header-right {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .logo img {
+    width: 48px;
+    height: 48px;
+  }
+  .brand-text {
+    font-size: 1.1rem;
+    gap: 1px;
+    letter-spacing: 0;
+  }
+  .theme-toggle, .lang-toggle, .search-trigger {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  .cart-badge {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+  .whatsapp-cta {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  .mobile-menu-toggle {
+    font-size: 1.4rem;
+  }
 }
 
 /* Hero section */
