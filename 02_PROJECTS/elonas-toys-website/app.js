@@ -32,10 +32,10 @@ let state = {
     budget: 'all'
   },
   budgetRanges: [
-    { label: 'Under $20', min: null, max: 20 },
-    { label: '$20–$40', min: 20, max: 40 },
-    { label: '$40–$60', min: 40, max: 60 },
-    { label: '$60+', min: 60, max: null }
+    { label: '0–25$', min: null, max: 25 },
+    { label: '25–50$', min: 25, max: 50 },
+    { label: '50–100$', min: 50, max: 100 },
+    { label: '100+ $', min: 100, max: null }
   ],
   viewMode: 'grid', // 'grid' or 'list',
   whatsapp: '+96178702712',
