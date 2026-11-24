@@ -12,7 +12,7 @@ let state = {
     return 'en';
   })(),
   theme: localStorage.getItem('elona-theme') || 'light',
-  cart: JSON.parse(localStorage.getItem('elona-cart') || '[]'),
+  cart: [],
   products: [],
   ageBrackets: [
     "0–12 Months",
