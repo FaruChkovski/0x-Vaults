@@ -1,9 +1,9 @@
 ---
 title: "Elona's Toys — Website Spec"
 type: project
-status: active
+status: completed
 tags: [spec, blueprint, elonas-toys, website]
-last_updated: "2026-11-23"
+last_updated: "2026-11-24"
 agent_owner: hermes
 related:
   - "[[00_INDEX]]"
@@ -93,7 +93,7 @@ Logo → Core nav links → Search trigger → Cart badge → EN/AR toggle → D
 #F97316 — teddy bear (used in hero banner, not as site color)
 
 ### Typography
-- English headings / Logo: Permanent Marker (handwritten)
+- English headings / Logo: Fredoka (chunky, rounded, playful)
 - Arabic headings + body: Cairo or Lalezar (playful, polished, RTL-friendly)
 - English body: Clean sans-serif (system fonts)
 
@@ -178,7 +178,7 @@ Logo → Core nav links → Search trigger → Cart badge → EN/AR toggle → D
 
 ## Next Step
 
-Review this spec. Edit, reorder, or fine-tune any detail. When you're happy, reply **"APPROVED TO BUILD"** and I'll start creating the actual website files.
+Website is built and ready for deploy. See `project.md` for the final result summary.
 
 ---
 

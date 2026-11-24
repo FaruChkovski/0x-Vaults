@@ -55,7 +55,7 @@ End-to-end website project for Elona's Toys (@elonastoys), a local toy and kids 
 - `delivery.html` — Delivery Info & payment methods (Whish Money / Pay Upon Delivery)
 - `style.css` — Design system with Light + Dark mode tokens
 - `app.js` — Vanilla JS app (cart, filters, bilingual, theme, WhatsApp checkout)
-- `products.json` — 12 products with all age brackets & categories
+- `products.json` — 21 products with all age brackets & categories
 
 ## Notes
 

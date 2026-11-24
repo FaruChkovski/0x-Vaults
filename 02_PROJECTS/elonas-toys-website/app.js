@@ -54,7 +54,12 @@ const els = {
   cartTotal: document.getElementById('cartTotal'),
   modalOverlay: document.getElementById('modalOverlay'),
   searchInput: document.getElementById('searchInput'),
+  modalSearchInput: document.getElementById('modalSearchInput'),
   productsGrid: document.getElementById('productsGrid'),
+  catalogResultCount: document.getElementById('catalogResultCount'),
+  modalAgeFilterContainer: document.getElementById('modalAgeFilterContainer'),
+  modalCategoryFilterContainer: document.getElementById('modalCategoryFilterContainer'),
+  modalBudgetFilterContainer: document.getElementById('modalBudgetFilterContainer'),
   viewGridBtn: document.getElementById('viewGridBtn'),
   viewListBtn: document.getElementById('viewListBtn'),
   toast: document.getElementById('toast'),
@@ -96,6 +101,47 @@ async function init() {
     els.searchInput.addEventListener('input', (e) => {
       state.filters.keyword = e.target.value.toLowerCase();
       renderProducts();
+    });
+  }
+  if (els.modalSearchInput) {
+    els.modalSearchInput.addEventListener('input', (e) => {
+      state.filters.keyword = e.target.value.toLowerCase();
+      renderProducts();
+    });
+  }
+
+  // Wire modal filter containers (rendered on-demand via renderFilters below)
+  if (els.modalAgeFilterContainer) {
+    els.modalAgeFilterContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('chip')) {
+        const val = e.target.dataset.value;
+        state.filters.age = val;
+        els.modalAgeFilterContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        e.target.classList.add('active');
+        renderProducts();
+      }
+    });
+  }
+  if (els.modalCategoryFilterContainer) {
+    els.modalCategoryFilterContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('chip')) {
+        const val = e.target.dataset.value;
+        state.filters.category = val;
+        els.modalCategoryFilterContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        e.target.classList.add('active');
+        renderProducts();
+      }
+    });
+  }
+  if (els.modalBudgetFilterContainer) {
+    els.modalBudgetFilterContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('chip')) {
+        const val = e.target.dataset.value;
+        state.filters.budget = val;
+        els.modalBudgetFilterContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        e.target.classList.add('active');
+        renderProducts();
+      }
     });
   }
 
@@ -192,11 +238,11 @@ function applyLang() {
     ar: {
       'nav.home': 'الرئيسية', 'nav.catalog': 'المتجر', 'nav.about': 'معلومات عنا',
       'nav.contact': 'اتصل بنا', 'nav.delivery': 'معلومات التوصيل',
-      'hero.title': "ألعابilonا", 'hero.tagline': "متجرك الشامل للأطفال — ألعاب ومستلزمات — جودة تثق بها",
+      'hero.title': "ألعاب إيلونا", 'hero.tagline': "متجرك الشامل للأطفال — ألعاب ومستلزمات — جودة تثق بها",
       'hero.shop': 'تسوق الألعاب', 'hero.whatsapp': 'واتساب',
       'section.special': 'عروض خاصة', 'section.categories': 'الأقسام',
       'section.socials': 'تابعونا', 'section.feedback': 'آراء العملاء',
-      'section.location': 'قم بزيارتنا', 'footer.rights': '© 2026 ألعابilonا — خلدة، لبنان',
+      'section.location': 'قم بزيارتنا', 'footer.rights': '© 2026 ألعاب إيلونا — خلدة، لبنان',
       'cart.title': 'عربة التسوق', 'cart.empty': 'عربتك في انتظارك 🧸', 'cart.checkout': 'الدفع عبر واتساب',
       'filter.age': 'تصفية حسب العمر', 'filter.category': 'تصفية حسب القسم', 'filter.budget': 'تصفية حسب الميزانية',
       'view.grid': 'عرض شبكي', 'view.list': 'عرض قائمة',
@@ -208,77 +254,70 @@ function applyLang() {
     const key = el.getAttribute('data-i18n');
     if (t[key]) el.textContent = t[key];
   });
-  document.title = state.lang === 'ar' ? 'ألعابilonا' : "Elona's Toys";
+  // Only set the store-name title on the homepage (title is just the store name).
+  // Subpages already have their own <title> (e.g. "Catalog — Elona's Toys") — preserve them.
+  if (document.title === "Elona's Toys" || document.title === 'ألعاب إيلونا') {
+    document.title = state.lang === 'ar' ? 'ألعاب إيلونا' : "Elona's Toys";
+  }
 }
 
 // --- Filters ---
 function renderFilters() {
-  // Query fresh to avoid duplicate-ID issues between main area and modal
-  const ageContainer = document.getElementById('ageFilterContainer');
-  const catContainer = document.getElementById('categoryFilterContainer');
-  if (!ageContainer || !catContainer) return;
+  // Render main-page containers if present (catalog.html)
+  const mainAgeContainer = document.getElementById('ageFilterContainer');
+  const mainCatContainer = document.getElementById('categoryFilterContainer');
+  const mainBudgetContainer = document.getElementById('budgetFilterContainer');
+  if (mainAgeContainer || mainCatContainer) {
+    renderFilterContainer('age', mainAgeContainer);
+    renderFilterContainer('category', mainCatContainer);
+    if (mainBudgetContainer) renderFilterContainer('budget', mainBudgetContainer);
+  }
+  // Render modal containers if present (index, product-detail, about, contact, delivery)
+  if (els.modalAgeFilterContainer || els.modalCategoryFilterContainer) {
+    renderFilterContainer('age', els.modalAgeFilterContainer);
+    renderFilterContainer('category', els.modalCategoryFilterContainer);
+    if (els.modalBudgetFilterContainer) renderFilterContainer('budget', els.modalBudgetFilterContainer);
+  }
+  if (!mainAgeContainer && !els.modalAgeFilterContainer) return;
 
-  // Age chips
-  ageContainer.innerHTML = '<button class="chip active" data-filter="age" data-value="all">' + (state.lang === 'ar' ? 'جميع الأعمار' : 'All Ages') + '</button>';
-  (state.ageBrackets || []).forEach(age => {
-    const btn = document.createElement('button');
-    btn.className = 'chip';
-    btn.dataset.filter = 'age';
-    btn.dataset.value = age;
-    btn.textContent = age;
-    ageContainer.appendChild(btn);
-  });
-  // Category chips
-  catContainer.innerHTML = '<button class="chip active" data-filter="category" data-value="all">' + (state.lang === 'ar' ? 'جميع الأقسام' : 'All Categories') + '</button>';
-  (state.categories || []).forEach(cat => {
-    const btn = document.createElement('button');
-    btn.className = 'chip';
-    btn.dataset.filter = 'category';
-    btn.dataset.value = cat;
-    btn.textContent = cat;
-    catContainer.appendChild(btn);
-  });
-  // Budget chips
-  const budgetContainer = document.getElementById('budgetFilterContainer');
-  if (budgetContainer) {
-    budgetContainer.innerHTML = '<button class="chip active" data-filter="budget" data-value="all">' + (state.lang === 'ar' ? 'جميع الميزانيات' : 'All Budgets') + '</button>';
-    (state.budgetRanges || []).forEach(range => {
-      const btn = document.createElement('button');
-      btn.className = 'chip';
-      btn.dataset.filter = 'budget';
-      btn.dataset.value = range.label;
-      btn.textContent = range.label;
-      budgetContainer.appendChild(btn);
-    });
-    budgetContainer.addEventListener('click', (e) => {
+  // Chip click handlers for main containers
+  if (mainAgeContainer) {
+    mainAgeContainer.addEventListener('click', (e) => {
       if (e.target.classList.contains('chip')) {
         const val = e.target.dataset.value;
-        state.filters.budget = val;
-        budgetContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        state.filters.age = val;
+        mainAgeContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         e.target.classList.add('active');
         renderProducts();
       }
     });
   }
+  if (mainCatContainer) {
+    mainCatContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('chip')) {
+        const val = e.target.dataset.value;
+        state.filters.category = val;
+        mainCatContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        e.target.classList.add('active');
+        renderProducts();
+      }
+    });
+  }
+}
 
-  // Chip click handlers
-  ageContainer.addEventListener('click', (e) => {
-    if (e.target.classList.contains('chip')) {
-      const val = e.target.dataset.value;
-      state.filters.age = val;
-      ageContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      e.target.classList.add('active');
-      renderProducts();
-    }
-  });
-  catContainer.addEventListener('click', (e) => {
-    if (e.target.classList.contains('chip')) {
-      const val = e.target.dataset.value;
-      state.filters.category = val;
-      catContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      e.target.classList.add('active');
-      renderProducts();
-    }
+function renderFilterContainer(kind, container) {
+  container.innerHTML = '<button class="chip active" data-filter="' + kind + '" data-value="all">' + (state.lang === 'ar' ? kind === 'age' ? 'جميع الأعمار' : kind === 'category' ? 'جميع الأقسام' : 'جميع الميزانيات' : kind === 'age' ? 'All Ages' : kind === 'category' ? 'All Categories' : 'All Budgets') + '</button>';
+  let items = [];
+  if (kind === 'age') items = state.ageBrackets || [];
+  if (kind === 'category') items = state.categories || [];
+  if (kind === 'budget') items = state.budgetRanges.map(r => r.label);
+  items.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.dataset.filter = kind;
+    btn.dataset.value = item;
+    btn.textContent = item;
+    container.appendChild(btn);
   });
 }
 
@@ -302,6 +341,16 @@ window.renderProducts = function renderProducts() {
     }
     return ageMatch && catMatch && kwMatch && budgetMatch;
   });
+
+  // Update result count
+  if (els.catalogResultCount) {
+    const count = filtered.length;
+    const total = state.products.length;
+    const label = state.lang === 'ar'
+      ? (count === total ? 'إظهار جميع الألعاب (' + total + ')' : 'نتائج (' + count + ' من ' + total + ')')
+      : (count === total ? 'Showing all toys (' + total + ')' : count + ' of ' + total + ' toys');
+    els.catalogResultCount.textContent = label;
+  }
 
   if (state.viewMode === 'grid') {
     els.productsGrid.className = 'grid grid-cols-4';

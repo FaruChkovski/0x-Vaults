@@ -3,7 +3,7 @@ title: "Elona's Toys — Discovery Notes"
 type: project
 status: active
 tags: [discovery, notes, elonas-toys, decisions]
-last_updated: "2026-11-23"
+last_updated: "2026-11-24"
 agent_owner: hermes
 related:
   - "[[00_INDEX]]"

@@ -6,15 +6,15 @@
 <title>About Us — Elona's Toys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Cairo:wght@400;700&family=Lalezar&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Cairo:wght@400;700&family=Lalezar&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='white'/%3E%3Ctext x='50' y='60' font-size='50' text-anchor='middle' font-family='Arial'%3E%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 </head>
 <body>
 <header>
   <div class="header-left">
     <a href="index.html" class="logo">
-      <img src="assets/logo.svg" alt="Elona's Toys logo">
+      <img src="assets/logo.png" alt="Elona's Toys logo">
       <span class="brand-text">
         <span class="c1">E</span><span class="c2">l</span><span class="c3">o</span><span class="c4">n</span><span class="c5">a</span><span class="c6">'</span><span class="c7">s</span>
         <span class="c7"> </span><span class="c8">T</span><span class="c9">o</span><span class="c10">y</span><span class="c11">s</span>
@@ -63,12 +63,12 @@
     <button class="modal-close" id="modalClose">×</button>
     <h2>Search Toys</h2>
     <div class="search-form">
-      <input type="text" id="searchInput" placeholder="Search by name, age, or category...">
+      <input type="text" id="modalSearchInput" placeholder="Search by name, age, or category...">
     </div>
     <div style="font-weight:600; margin-bottom:12px;" data-i18n="filter.age">Filter by Age</div>
-    <div class="filter-chips" id="ageFilterContainer"></div>
+    <div class="filter-chips" id="modalAgeFilterContainer"></div>
     <div style="font-weight:600; margin-top:16px; margin-bottom:12px;" data-i18n="filter.category">Filter by Category</div>
-    <div class="filter-chips" id="categoryFilterContainer"></div>
+    <div class="filter-chips" id="modalCategoryFilterContainer"></div>
   </div>
 </div>
 
