@@ -226,6 +226,21 @@ header {
 .whatsapp-cta:hover { background: #059669; transform: translateY(-1px); }
 .whatsapp-cta:active { transform: scale(0.97); }
 
+/* Auth button — purple like Shop Toys, all screen sizes */
+.auth-btn {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.auth-btn:hover {
+  background: var(--color-primary-hover);
+}
+
 /* Mobile nav toggle */
 .mobile-menu-toggle {
   display: none;
@@ -266,19 +281,6 @@ header {
   .header-left, .header-right {
     gap: 8px;
     flex-wrap: wrap;
-  }
-  .auth-btn {
-    background: var(--color-primary);
-    color: #fff;
-    border: none;
-    padding: 10px 16px;
-    border-radius: var(--radius-sm);
-    font-weight: 700;
-    font-size: 0.95rem;
-    cursor: pointer;
-  }
-  .auth-btn:hover {
-    background: var(--color-primary-hover);
   }
   .logo img {
     width: 48px;
