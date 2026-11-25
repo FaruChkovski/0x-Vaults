@@ -334,6 +334,17 @@ function renderFilters() {
       }
     });
   }
+  if (mainBudgetContainer) {
+    mainBudgetContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('chip')) {
+        const val = e.target.dataset.value;
+        state.filters.budget = val;
+        mainBudgetContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        e.target.classList.add('active');
+        renderProducts();
+      }
+    });
+  }
 }
 
 function renderFilterContainer(kind, container) {
