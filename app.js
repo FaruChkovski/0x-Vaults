@@ -803,163 +803,169 @@ window.firebaseAuth?.onAuthStateChanged(async (user) => {
 });
 
 // --- Auth UI ---
-const authBtn = document.getElementById('authBtn');
-const authModal = document.getElementById('authModal');
-const authModalClose = document.getElementById('authModalClose');
+function setupAuthUI() {
+  const authBtn = document.getElementById('authBtn');
+  const authModal = document.getElementById('authModal');
+  const authModalClose = document.getElementById('authModalClose');
 
-function showAuthModal() {
-  if (!authModal) return;
-  authModal.classList.add('open');
-  showSignInForm();
-}
-function hideAuthModal() {
-  if (!authModal) return;
-  authModal.classList.remove('open');
-}
-function showSignInForm() {
-  const sIn = document.getElementById('authFormSignIn');
-  const sUp = document.getElementById('authFormSignUp');
-  const prof = document.getElementById('authProfileForm');
-  if (sIn) sIn.style.display = '';
-  if (sUp) sUp.style.display = 'none';
-  if (prof) prof.style.display = 'none';
-}
-function showSignUpForm() {
-  const sIn = document.getElementById('authFormSignIn');
-  const sUp = document.getElementById('authFormSignUp');
-  const prof = document.getElementById('authProfileForm');
-  if (sIn) sIn.style.display = 'none';
-  if (sUp) sUp.style.display = '';
-  if (prof) prof.style.display = 'none';
-}
-
-if (authBtn) {
-  authBtn.addEventListener('click', showAuthModal);
-}
-if (authModalClose) {
-  authModalClose.addEventListener('click', hideAuthModal);
-}
-if (authModal) {
-  authModal.addEventListener('click', (e) => { if (e.target === authModal) hideAuthModal(); });
-}
-
-// Google sign-in
-const authGoogleBtn = document.getElementById('authGoogleBtn');
-const authGoogleBtn2 = document.getElementById('authGoogleBtn2');
-async function googleSignIn() {
-  if (!window.firebaseAuth) return;
-  const { signInWithPopup, GoogleAuthProvider } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
-  try {
-    const provider = new GoogleAuthProvider();
-    const cred = await signInWithPopup(window.firebaseAuth, provider);
-    handleSignedIn(cred.user);
-  } catch (e) {
-    showToast(e.message || 'Sign in failed');
+  function showAuthModal() {
+    if (!authModal) return;
+    authModal.classList.add('open');
+    showSignInForm();
   }
-}
-if (authGoogleBtn) authGoogleBtn.addEventListener('click', googleSignIn);
-if (authGoogleBtn2) authGoogleBtn2.addEventListener('click', googleSignIn);
+  function hideAuthModal() {
+    if (!authModal) return;
+    authModal.classList.remove('open');
+  }
+  function showSignInForm() {
+    const sIn = document.getElementById('authFormSignIn');
+    const sUp = document.getElementById('authFormSignUp');
+    const prof = document.getElementById('authProfileForm');
+    if (sIn) sIn.style.display = '';
+    if (sUp) sUp.style.display = 'none';
+    if (prof) prof.style.display = 'none';
+  }
+  function showSignUpForm() {
+    const sIn = document.getElementById('authFormSignIn');
+    const sUp = document.getElementById('authFormSignUp');
+    const prof = document.getElementById('authProfileForm');
+    if (sIn) sIn.style.display = 'none';
+    if (sUp) sUp.style.display = '';
+    if (prof) prof.style.display = 'none';
+  }
 
-// Email sign-in
-const authEmailBtn = document.getElementById('authEmailBtn');
-if (authEmailBtn) {
-  authEmailBtn.addEventListener('click', async () => {
+  if (authBtn) {
+    authBtn.addEventListener('click', showAuthModal);
+  }
+  if (authModalClose) {
+    authModalClose.addEventListener('click', hideAuthModal);
+  }
+  if (authModal) {
+    authModal.addEventListener('click', (e) => { if (e.target === authModal) hideAuthModal(); });
+  }
+
+  // Google sign-in
+  const authGoogleBtn = document.getElementById('authGoogleBtn');
+  const authGoogleBtn2 = document.getElementById('authGoogleBtn2');
+  async function googleSignIn() {
     if (!window.firebaseAuth) return;
-    const { signInWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
-    const email = document.getElementById('authEmail')?.value;
-    const password = document.getElementById('authPassword')?.value;
+    const { signInWithPopup, GoogleAuthProvider } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
     try {
-      const cred = await signInWithEmailAndPassword(window.firebaseAuth, email, password);
+      const provider = new GoogleAuthProvider();
+      const cred = await signInWithPopup(window.firebaseAuth, provider);
       handleSignedIn(cred.user);
-    } catch (e) { showToast(e.message || 'Sign in failed'); }
-  });
-}
+    } catch (e) {
+      showToast(e.message || 'Sign in failed');
+    }
+  }
+  if (authGoogleBtn) authGoogleBtn.addEventListener('click', googleSignIn);
+  if (authGoogleBtn2) authGoogleBtn2.addEventListener('click', googleSignIn);
 
-// Email sign-up
-const authEmailBtn2 = document.getElementById('authEmailBtn2');
-if (authEmailBtn2) {
-  authEmailBtn2.addEventListener('click', async () => {
-    if (!window.firebaseAuth) return;
-    const { createUserWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
-    const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
-    const name = document.getElementById('authName')?.value;
-    const email = document.getElementById('authEmail2')?.value;
-    const password = document.getElementById('authPassword2')?.value;
-    const marketing = document.getElementById('authMarketing')?.checked;
-    try {
-      const cred = await createUserWithEmailAndPassword(window.firebaseAuth, email, password);
-      const user = cred.user;
-      await setDoc(doc(window.firebaseDb, 'users', user.uid), {
-        uid: user.uid, email: user.email, name: name || '',
-        phone: '', city: '', marketingOptIn: !!marketing, createdAt: new Date()
-      });
-      showToast(state.lang === 'ar' ? 'تم إنشاء الحساب' : 'Account created');
-      handleSignedIn(user, true);
-    } catch (e) { showToast(e.message || 'Signup failed'); }
-  });
-}
+  // Email sign-in
+  const authEmailBtn = document.getElementById('authEmailBtn');
+  if (authEmailBtn) {
+    authEmailBtn.addEventListener('click', async () => {
+      if (!window.firebaseAuth) return;
+      const { signInWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
+      const email = document.getElementById('authEmail')?.value;
+      const password = document.getElementById('authPassword')?.value;
+      try {
+        const cred = await signInWithEmailAndPassword(window.firebaseAuth, email, password);
+        handleSignedIn(cred.user);
+      } catch (e) { showToast(e.message || 'Sign in failed'); }
+    });
+  }
 
-// Switch forms
-const authSwitchToSignup = document.getElementById('authSwitchToSignup');
-const authSwitchToSignIn = document.getElementById('authSwitchToSignIn');
-if (authSwitchToSignup) authSwitchToSignup.addEventListener('click', showSignUpForm);
-if (authSwitchToSignIn) authSwitchToSignIn.addEventListener('click', showSignInForm);
+  // Email sign-up
+  const authEmailBtn2 = document.getElementById('authEmailBtn2');
+  if (authEmailBtn2) {
+    authEmailBtn2.addEventListener('click', async () => {
+      if (!window.firebaseAuth) return;
+      const { createUserWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
+      const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+      const name = document.getElementById('authName')?.value;
+      const email = document.getElementById('authEmail2')?.value;
+      const password = document.getElementById('authPassword2')?.value;
+      const marketing = document.getElementById('authMarketing')?.checked;
+      try {
+        const cred = await createUserWithEmailAndPassword(window.firebaseAuth, email, password);
+        const user = cred.user;
+        await setDoc(doc(window.firebaseDb, 'users', user.uid), {
+          uid: user.uid, email: user.email, name: name || '',
+          phone: '', city: '', marketingOptIn: !!marketing, createdAt: new Date()
+        });
+        showToast(state.lang === 'ar' ? 'تم إنشاء الحساب' : 'Account created');
+        handleSignedIn(user, true);
+      } catch (e) { showToast(e.message || 'Signup failed'); }
+    });
+  }
 
-// Profile save
-const profileSaveBtn = document.getElementById('profileSaveBtn');
-if (profileSaveBtn) {
-  profileSaveBtn.addEventListener('click', async () => {
-    if (!window.firebaseAuth || !window.firebaseDb || !window.firebaseAuth.currentUser) return;
-    const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
-    const name = document.getElementById('profileName')?.value;
-    const phone = document.getElementById('profilePhone')?.value;
-    const city = document.getElementById('profileCity')?.value;
-    try {
-      await setDoc(doc(window.firebaseDb, 'users', window.firebaseAuth.currentUser.uid), {
-        name: name || '', phone: phone || '', city: city || '', updatedAt: new Date()
-      }, { merge: true });
-      showToast(state.lang === 'ar' ? 'تم حفظ الملف الشخصي' : 'Profile saved');
-      hideAuthModal();
-    } catch (e) { showToast(e.message || 'Save failed'); }
-  });
-}
+  // Switch forms
+  const authSwitchToSignup = document.getElementById('authSwitchToSignup');
+  const authSwitchToSignIn = document.getElementById('authSwitchToSignIn');
+  if (authSwitchToSignup) authSwitchToSignup.addEventListener('click', showSignUpForm);
+  if (authSwitchToSignIn) authSwitchToSignIn.addEventListener('click', showSignInForm);
 
-async function handleSignedIn(user, isNew = false) {
-  hideAuthModal();
-  updateAuthUI(user);
-  if (isNew) {
-    const pf = document.getElementById('authProfileForm');
-    const si = document.getElementById('authFormSignIn');
-    const su = document.getElementById('authFormSignUp');
-    const pn = document.getElementById('profileName');
-    if (pf) pf.style.display = '';
-    if (si) si.style.display = 'none';
-    if (su) su.style.display = 'none';
-    if (pn) pn.value = user.displayName || '';
-  } else {
-    const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
-    try {
-      const snap = await getDoc(doc(window.firebaseDb, 'users', user.uid));
-      if (snap.exists() && snap.data().name) {
-        showToast(state.lang === 'ar' ? `مرحباً ${snap.data().name}` : `Welcome back, ${snap.data().name}`);
-      }
-    } catch (e) {}
+  // Profile save
+  const profileSaveBtn = document.getElementById('profileSaveBtn');
+  if (profileSaveBtn) {
+    profileSaveBtn.addEventListener('click', async () => {
+      if (!window.firebaseAuth || !window.firebaseDb || !window.firebaseAuth.currentUser) return;
+      const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+      const name = document.getElementById('profileName')?.value;
+      const phone = document.getElementById('profilePhone')?.value;
+      const city = document.getElementById('profileCity')?.value;
+      try {
+        await setDoc(doc(window.firebaseDb, 'users', window.firebaseAuth.currentUser.uid), {
+          name: name || '', phone: phone || '', city: city || '', updatedAt: new Date()
+        }, { merge: true });
+        showToast(state.lang === 'ar' ? 'تم حفظ الملف الشخصي' : 'Profile saved');
+        hideAuthModal();
+      } catch (e) { showToast(e.message || 'Save failed'); }
+    });
+  }
+
+  async function handleSignedIn(user, isNew = false) {
+    hideAuthModal();
+    updateAuthUI(user);
+    if (isNew) {
+      const pf = document.getElementById('authProfileForm');
+      const si = document.getElementById('authFormSignIn');
+      const su = document.getElementById('authFormSignUp');
+      const pn = document.getElementById('profileName');
+      if (pf) pf.style.display = '';
+      if (si) si.style.display = 'none';
+      if (su) su.style.display = 'none';
+      if (pn) pn.value = user.displayName || '';
+    } else {
+      const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+      try {
+        const snap = await getDoc(doc(window.firebaseDb, 'users', user.uid));
+        if (snap.exists() && snap.data().name) {
+          showToast(state.lang === 'ar' ? `مرحباً ${snap.data().name}` : `Welcome back, ${snap.data().name}`);
+        }
+      } catch (e) {}
+    }
+  }
+
+  function updateAuthUI(user) {
+    if (!authBtn) return;
+    if (user) {
+      const name = user.displayName || user.email?.split('@')[0] || 'User';
+      authBtn.textContent = name;
+      authBtn.title = 'Sign Out';
+      authBtn.onclick = signOut;
+    } else {
+      authBtn.textContent = state.lang === 'ar' ? 'تسجيل الدخول / انضمام' : 'Sign In / Join';
+      authBtn.title = 'Sign In';
+      authBtn.onclick = showAuthModal;
+    }
   }
 }
 
-function updateAuthUI(user) {
-  if (!authBtn) return;
-  if (user) {
-    const name = user.displayName || user.email?.split('@')[0] || 'User';
-    authBtn.textContent = name;
-    authBtn.title = 'Sign Out';
-    authBtn.onclick = signOut;
-  } else {
-    authBtn.textContent = state.lang === 'ar' ? 'تسجيل الدخول / انضمام' : 'Sign In / Join';
-    authBtn.title = 'Sign In';
-    authBtn.onclick = showAuthModal;
-  }
-}
+document.addEventListener('DOMContentLoaded', () => {
+  setupAuthUI();
+});
 
 // --- Start ---
 if (document.readyState === 'loading') {
