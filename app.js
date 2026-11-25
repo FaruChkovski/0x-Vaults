@@ -13,6 +13,7 @@ let state = {
   })(),
   theme: localStorage.getItem('elona-theme') || 'light',
   cart: [],
+  watchlist: JSON.parse(localStorage.getItem('elona-watchlist') || '[]'),
   products: [],
   ageBrackets: [
     "0–12 Months",
@@ -208,6 +209,7 @@ async function init() {
   renderFilters();
   renderProducts();
   renderSpecialOffers();
+  renderWatchlist();
 }
 
 // --- URL filter params ---
@@ -264,7 +266,11 @@ function applyLang() {
       'cart.title': 'Your Cart', 'cart.empty': 'Your cart is waiting 🧸', 'cart.checkout': 'Checkout via WhatsApp',
       'filter.age': 'Filter by Age', 'filter.category': 'Filter by Category',
       'view.grid': 'Grid', 'view.list': 'List',
-      'copy.success': 'Number copied!', 'toast.added': 'Added to cart 🧸'
+      'copy.success': 'Number copied!', 'toast.added': 'Added to cart 🧸',
+      'watchlist.title': 'Your Watchlist', 'watchlist.subtitle': 'Save toys you love and get notified when they\'re on offer.',
+      'watchlist.empty': 'Your watchlist is empty', 'watchlist.browse': 'Browse Catalog',
+      'watchlist.add': 'Add to Watchlist', 'watchlist.remove': 'Remove from Watchlist',
+      'watchlist.notify': 'You\'ll be notified when this goes on offer!'
     },
     ar: {
       'nav.home': 'الرئيسية', 'nav.catalog': 'المتجر', 'nav.about': 'معلومات عنا',
@@ -277,7 +283,11 @@ function applyLang() {
       'cart.title': 'عربة التسوق', 'cart.empty': 'عربتك في انتظارك 🧸', 'cart.checkout': 'الدفع عبر واتساب',
       'filter.age': 'تصفية حسب العمر', 'filter.category': 'تصفية حسب القسم', 'filter.budget': 'تصفية حسب الميزانية',
       'view.grid': 'عرض شبكي', 'view.list': 'عرض قائمة',
-      'copy.success': 'تم نسخ الرقم!', 'toast.added': 'أضيف إلى السلة 🧸'
+      'copy.success': 'تم نسخ الرقم!', 'toast.added': 'أضيف إلى السلة 🧸',
+      'watchlist.title': 'قائمة الأمنيات', 'watchlist.subtitle': 'احفظ الألعاب المفضلة واحصل على إشعار عند توفر عروض.',
+      'watchlist.empty': 'قائمة الأمنيات فارغة', 'watchlist.browse': 'تصفح الكتالوج',
+      'watchlist.add': 'إضافة إلى الأمنيات', 'watchlist.remove': 'إزالة من الأمنيات',
+      'watchlist.notify': 'سيتم إعلامك عند توفر عرض!'
     }
   };
   const t = translations[state.lang];
@@ -430,6 +440,7 @@ function productCardHTML(p) {
       </div>
       <div class="product-actions">
         <button class="btn btn-accent btn-sm w-full mb-8" onclick="addToCart('${p.id}')">${state.lang === 'ar' ? 'إضافة إلى السلة' : 'Add to Cart'}</button>
+        <button class="btn btn-ghost btn-sm w-full mb-8" onclick="toggleWatchlist('${p.id}')" style="color:var(--color-text); border-color:var(--color-border);">${isInWatchlist(p.id) ? (state.lang === 'ar' ? 'مُضاف للأمنيات' : 'Added to Watchlist 💖') : (state.lang === 'ar' ? 'إضافة للأمنيات' : 'Add to Watchlist 💖')}</button>
         <button class="btn btn-ghost btn-sm w-full" onclick="openProductModal('${p.id}')" style="color:var(--color-text); border-color:var(--color-border);">${state.lang === 'ar' ? 'عرض التفاصيل' : 'View Details'}</button>
       </div>
     </article>
@@ -501,6 +512,68 @@ function changeQty(productId, delta) {
 
 function saveCart() {
   localStorage.setItem('elona-cart', JSON.stringify(state.cart));
+}
+
+// --- Watchlist ---
+function toggleWatchlist(productId) {
+  const existing = state.watchlist.find(item => item.id === productId);
+  const product = state.products.find(p => p.id === productId);
+  if (!product) return;
+  const name = state.lang === 'ar' && product.nameAr ? product.nameAr : product.name;
+  if (existing) {
+    state.watchlist = state.watchlist.filter(item => item.id !== productId);
+    showToast(state.lang === 'ar' ? 'تم الإزالة من الأمنيات' : 'Removed from watchlist');
+  } else {
+    state.watchlist.push({ id: productId });
+    showToast(state.lang === 'ar' ? 'تم الإضافة إلى الأمنيات' : 'Added to watchlist 💖');
+  }
+  saveWatchlist();
+  renderWatchlist();
+}
+
+function saveWatchlist() {
+  localStorage.setItem('elona-watchlist', JSON.stringify(state.watchlist));
+}
+
+function isInWatchlist(productId) {
+  return state.watchlist.some(item => item.id === productId);
+}
+
+function renderWatchlist() {
+  const empty = document.getElementById('watchlistEmpty');
+  const grid = document.getElementById('watchlistGrid');
+  if (!empty || !grid) return; // not on homepage
+
+  if (state.watchlist.length === 0) {
+    empty.style.display = '';
+    grid.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.style.display = 'grid';
+  grid.innerHTML = state.watchlist.map(item => {
+    const p = state.products.find(prod => prod.id === item.id);
+    if (!p) return '';
+    const name = state.lang === 'ar' && p.nameAr ? p.nameAr : p.name;
+    const desc = state.lang === 'ar' && p.descriptionAr ? p.descriptionAr : p.description;
+    const onOffer = state.store?.specialOffers?.includes(p.id);
+    return `
+      <article class="card product-card fade-in">
+        <div class="product-image" style="height:160px;">🧸</div>
+        <span class="product-badge">${p.ageBracket}</span>
+        <div class="product-info">
+          <div class="product-name">${escapeHtml(name)}</div>
+          <div class="product-price">$${p.price}</div>
+          <p class="product-desc" style="font-size:0.85rem; color:var(--color-text-muted); margin:10px 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${escapeHtml(desc)}</p>
+          ${onOffer ? `<div style="color:var(--color-primary); font-weight:700; font-size:0.85rem;">🎉 On offer!</div>` : ''}
+        </div>
+        <div class="product-actions">
+          <button class="btn btn-accent btn-sm w-full mb-8" onclick="addToCart('${p.id}')">${state.lang === 'ar' ? 'إضافة إلى السلة' : 'Add to Cart'}</button>
+          <button class="btn btn-ghost btn-sm w-full" onclick="toggleWatchlist('${p.id}')" style="color:var(--color-text); border-color:var(--color-border);">${state.lang === 'ar' ? 'إزالة من الأمنيات' : 'Remove from Watchlist'}</button>
+        </div>
+      </article>
+    `;
+  }).join('');
 }
 
 function updateCartUI() {

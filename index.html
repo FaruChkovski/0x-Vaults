@@ -55,34 +55,20 @@
   <div class="mascot-bob">🧸</div>
 </section>
 
-<!-- Search by Age & Category -->
+<!-- Watchlist Section -->
 <section class="py-48 container">
   <div class="section-header mb-48">
-    <h2 data-i18n="section.search">Search by Age &amp; Category</h2>
-    <p>Find the perfect toy for your child's age and interests.</p>
+    <h2 data-i18n="watchlist.title">Your Watchlist</h2>
+    <p data-i18n="watchlist.subtitle">Save toys you love and get notified when they're on offer.</p>
   </div>
-  <div class="grid grid-cols-4">
-    <a href="catalog.html?age=0%E2%80%9312%20Months" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
-      <div style="font-size:3rem; margin-bottom:12px;">👶</div>
-      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">0–12 Months</h3>
-    </a>
-    <a href="catalog.html?age=1%E2%80%933%20Years" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
-      <div style="font-size:3rem; margin-bottom:12px;">🧸</div>
-      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">1–3 Years</h3>
-    </a>
-    <a href="catalog.html?age=3%E2%80%935%20Years" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
-      <div style="font-size:3rem; margin-bottom:12px;">🎨</div>
-      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">3–5 Years</h3>
-    </a>
-    <a href="catalog.html?age=6%E2%80%938%20Years" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
-      <div style="font-size:3rem; margin-bottom:12px;">🚗</div>
-      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">6–8 Years</h3>
-    </a>
-    <a href="catalog.html?age=9%2B%20Years" class="card text-center fade-in" style="text-decoration:none; color:inherit;">
-      <div style="font-size:3rem; margin-bottom:12px;">🏆</div>
-      <h3 style="font-family:var(--font-heading); color:var(--color-primary);">9+ Years</h3>
-    </a>
+  <div class="watchlist-empty" id="watchlistEmpty" style="text-align:center; padding:60px 20px;">
+    <div style="font-size:4rem; margin-bottom:16px;">💖</div>
+    <h3 style="font-family:var(--font-heading); color:var(--color-primary); margin-bottom:8px;" data-i18n="watchlist.empty">Your watchlist is empty</h3>
+    <p style="color:var(--color-text-muted);">Browse the catalog and tap the heart to save toys.</p>
+    <a href="catalog.html" class="btn btn-primary" data-i18n="watchlist.browse">Browse Catalog</a>
   </div>
+  <div class="watchlist-grid" id="watchlistGrid" style="display:none; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:24px;"></div>
+  <div id="watchlistToast" class="toast" style="bottom:80px;">Added to watchlist 💖</div>
 </section>
 
 <!-- Special Offers -->
