@@ -270,7 +270,12 @@ function applyLang() {
       'watchlist.title': 'Your Watchlist', 'watchlist.subtitle': 'Save toys you love and get notified when they\'re on offer.',
       'watchlist.empty': 'Your watchlist is empty', 'watchlist.browse': 'Browse Catalog',
       'watchlist.add': 'Add to Watchlist', 'watchlist.remove': 'Remove from Watchlist',
-      'watchlist.notify': 'You\'ll be notified when this goes on offer!'
+      'watchlist.notify': 'You\'ll be notified when this goes on offer!',
+      'auth.signIn': 'Sign In / Join', 'auth.createAccount': 'Create Account',
+      'auth.signInWithGoogle': 'Continue with Google', 'auth.signUpWithGoogle': 'Continue with Google',
+      'auth.or': 'or', 'auth.noAccount': "Don't have an account?", 'auth.haveAccount': 'Already have an account?',
+      'auth.welcome': 'Welcome to Elona\'s Toys 🧸', 'auth.completeProfile': "Let's complete your profile",
+      'auth.saveProfile': 'Save & Continue', 'auth.marketing': "I'd like to hear about offers"
     },
     ar: {
       'nav.home': 'الرئيسية', 'nav.catalog': 'المتجر', 'nav.about': 'معلومات عنا',
@@ -287,7 +292,12 @@ function applyLang() {
       'watchlist.title': 'قائمة الأمنيات', 'watchlist.subtitle': 'احفظ الألعاب المفضلة واحصل على إشعار عند توفر عروض.',
       'watchlist.empty': 'قائمة الأمنيات فارغة', 'watchlist.browse': 'تصفح الكتالوج',
       'watchlist.add': 'إضافة إلى الأمنيات', 'watchlist.remove': 'إزالة من الأمنيات',
-      'watchlist.notify': 'سيتم إعلامك عند توفر عرض!'
+      'watchlist.notify': 'سيتم إعلامك عند توفر عرض!',
+      'auth.signIn': 'تسجيل الدخول / انضمام', 'auth.createAccount': 'إنشاء حساب',
+      'auth.signInWithGoogle': 'استمرار مع جوجل', 'auth.signUpWithGoogle': 'استمرار مع جوجل',
+      'auth.or': 'أو', 'auth.noAccount': 'ليس لديك حساب؟', 'auth.haveAccount': 'لديك حساب بالفعل؟',
+      'auth.welcome': 'أهلاً بك في ألعاب إيلونا 🧸', 'auth.completeProfile': 'دعنا نكمل ملفك الشخصي',
+      'auth.saveProfile': 'حفظ والمتابعة', 'auth.marketing': 'أرغب في سماع العروض'
     }
   };
   const t = translations[state.lang];
@@ -791,6 +801,165 @@ window.firebaseAuth?.onAuthStateChanged(async (user) => {
     } catch (e) { /* best effort */ }
   }
 });
+
+// --- Auth UI ---
+const authBtn = document.getElementById('authBtn');
+const authModal = document.getElementById('authModal');
+const authModalClose = document.getElementById('authModalClose');
+
+function showAuthModal() {
+  if (!authModal) return;
+  authModal.classList.add('open');
+  showSignInForm();
+}
+function hideAuthModal() {
+  if (!authModal) return;
+  authModal.classList.remove('open');
+}
+function showSignInForm() {
+  const sIn = document.getElementById('authFormSignIn');
+  const sUp = document.getElementById('authFormSignUp');
+  const prof = document.getElementById('authProfileForm');
+  if (sIn) sIn.style.display = '';
+  if (sUp) sUp.style.display = 'none';
+  if (prof) prof.style.display = 'none';
+}
+function showSignUpForm() {
+  const sIn = document.getElementById('authFormSignIn');
+  const sUp = document.getElementById('authFormSignUp');
+  const prof = document.getElementById('authProfileForm');
+  if (sIn) sIn.style.display = 'none';
+  if (sUp) sUp.style.display = '';
+  if (prof) prof.style.display = 'none';
+}
+
+if (authBtn) {
+  authBtn.addEventListener('click', showAuthModal);
+}
+if (authModalClose) {
+  authModalClose.addEventListener('click', hideAuthModal);
+}
+if (authModal) {
+  authModal.addEventListener('click', (e) => { if (e.target === authModal) hideAuthModal(); });
+}
+
+// Google sign-in
+const authGoogleBtn = document.getElementById('authGoogleBtn');
+const authGoogleBtn2 = document.getElementById('authGoogleBtn2');
+async function googleSignIn() {
+  if (!window.firebaseAuth) return;
+  const { signInWithPopup, GoogleAuthProvider } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
+  try {
+    const provider = new GoogleAuthProvider();
+    const cred = await signInWithPopup(window.firebaseAuth, provider);
+    handleSignedIn(cred.user);
+  } catch (e) {
+    showToast(e.message || 'Sign in failed');
+  }
+}
+if (authGoogleBtn) authGoogleBtn.addEventListener('click', googleSignIn);
+if (authGoogleBtn2) authGoogleBtn2.addEventListener('click', googleSignIn);
+
+// Email sign-in
+const authEmailBtn = document.getElementById('authEmailBtn');
+if (authEmailBtn) {
+  authEmailBtn.addEventListener('click', async () => {
+    if (!window.firebaseAuth) return;
+    const { signInWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
+    const email = document.getElementById('authEmail')?.value;
+    const password = document.getElementById('authPassword')?.value;
+    try {
+      const cred = await signInWithEmailAndPassword(window.firebaseAuth, email, password);
+      handleSignedIn(cred.user);
+    } catch (e) { showToast(e.message || 'Sign in failed'); }
+  });
+}
+
+// Email sign-up
+const authEmailBtn2 = document.getElementById('authEmailBtn2');
+if (authEmailBtn2) {
+  authEmailBtn2.addEventListener('click', async () => {
+    if (!window.firebaseAuth) return;
+    const { createUserWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
+    const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const name = document.getElementById('authName')?.value;
+    const email = document.getElementById('authEmail2')?.value;
+    const password = document.getElementById('authPassword2')?.value;
+    const marketing = document.getElementById('authMarketing')?.checked;
+    try {
+      const cred = await createUserWithEmailAndPassword(window.firebaseAuth, email, password);
+      const user = cred.user;
+      await setDoc(doc(window.firebaseDb, 'users', user.uid), {
+        uid: user.uid, email: user.email, name: name || '',
+        phone: '', city: '', marketingOptIn: !!marketing, createdAt: new Date()
+      });
+      showToast(state.lang === 'ar' ? 'تم إنشاء الحساب' : 'Account created');
+      handleSignedIn(user, true);
+    } catch (e) { showToast(e.message || 'Signup failed'); }
+  });
+}
+
+// Switch forms
+const authSwitchToSignup = document.getElementById('authSwitchToSignup');
+const authSwitchToSignIn = document.getElementById('authSwitchToSignIn');
+if (authSwitchToSignup) authSwitchToSignup.addEventListener('click', showSignUpForm);
+if (authSwitchToSignIn) authSwitchToSignIn.addEventListener('click', showSignInForm);
+
+// Profile save
+const profileSaveBtn = document.getElementById('profileSaveBtn');
+if (profileSaveBtn) {
+  profileSaveBtn.addEventListener('click', async () => {
+    if (!window.firebaseAuth || !window.firebaseDb || !window.firebaseAuth.currentUser) return;
+    const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const name = document.getElementById('profileName')?.value;
+    const phone = document.getElementById('profilePhone')?.value;
+    const city = document.getElementById('profileCity')?.value;
+    try {
+      await setDoc(doc(window.firebaseDb, 'users', window.firebaseAuth.currentUser.uid), {
+        name: name || '', phone: phone || '', city: city || '', updatedAt: new Date()
+      }, { merge: true });
+      showToast(state.lang === 'ar' ? 'تم حفظ الملف الشخصي' : 'Profile saved');
+      hideAuthModal();
+    } catch (e) { showToast(e.message || 'Save failed'); }
+  });
+}
+
+async function handleSignedIn(user, isNew = false) {
+  hideAuthModal();
+  updateAuthUI(user);
+  if (isNew) {
+    const pf = document.getElementById('authProfileForm');
+    const si = document.getElementById('authFormSignIn');
+    const su = document.getElementById('authFormSignUp');
+    const pn = document.getElementById('profileName');
+    if (pf) pf.style.display = '';
+    if (si) si.style.display = 'none';
+    if (su) su.style.display = 'none';
+    if (pn) pn.value = user.displayName || '';
+  } else {
+    const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    try {
+      const snap = await getDoc(doc(window.firebaseDb, 'users', user.uid));
+      if (snap.exists() && snap.data().name) {
+        showToast(state.lang === 'ar' ? `مرحباً ${snap.data().name}` : `Welcome back, ${snap.data().name}`);
+      }
+    } catch (e) {}
+  }
+}
+
+function updateAuthUI(user) {
+  if (!authBtn) return;
+  if (user) {
+    const name = user.displayName || user.email?.split('@')[0] || 'User';
+    authBtn.textContent = name;
+    authBtn.title = 'Sign Out';
+    authBtn.onclick = signOut;
+  } else {
+    authBtn.textContent = state.lang === 'ar' ? 'تسجيل الدخول / انضمام' : 'Sign In / Join';
+    authBtn.title = 'Sign In';
+    authBtn.onclick = showAuthModal;
+  }
+}
 
 // --- Start ---
 if (document.readyState === 'loading') {

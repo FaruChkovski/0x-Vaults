@@ -33,7 +33,8 @@
     <div class="cart-badge" id="cartBadge" title="Your Cart">🛒<span class="cart-count" id="cartCount">0</span></div>
     <button class="theme-toggle" id="themeToggle" title="Dark/Light Mode">🌙</button>
     <button class="lang-toggle" id="langToggle" title="English / Arabic">EN / AR</button>
-    <a href="https://wa.me/96178702712" class="whatsapp-cta" target="_blank">💬 WhatsApp</a>
+    <a href="https://wa.me/96178702712" class="whatsapp-cta" target="_blank">💬 <span class="wa-label">WhatsApp</span></a>
+    <button id="authBtn" class="auth-btn" data-i18n="auth.signIn">Sign In / Join</button>
     <button class="mobile-menu-toggle" title="Menu">☰</button>
   </div>
 </header>
@@ -128,5 +129,63 @@
   window.firebaseDb = getFirestore(app);
 </script>
 <script src="app.js"></script>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal" style="max-width:420px;">
+    <button class="modal-close" id="authModalClose">×</button>
+    <div id="authFormSignIn" style="display:none;">
+      <h2 data-i18n="auth.signIn">Sign In</h2>
+      <p data-i18n="auth.signInWithGoogle">Continue with Google</p>
+      <button id="authGoogleBtn" class="btn btn-accent w-full mb-16" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+        <span style="font-size:1.2rem;">🔍</span> <span>Google</span>
+      </button>
+      <hr style="margin:16px 0; border:none; border-top:1px solid var(--color-border);">
+      <p style="font-size:0.85rem; color:var(--color-text-muted); margin-bottom:12px;" data-i18n="auth.or">or</p>
+      <div style="display:flex; gap:8px; flex-direction:column;">
+        <input id="authEmail" type="email" placeholder="Email" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
+        <input id="authPassword" type="password" placeholder="Password" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
+      </div>
+      <button id="authEmailBtn" class="btn btn-primary w-full mb-16" data-i18n="auth.signIn">Sign In</button>
+      <p style="font-size:0.85rem; color:var(--color-text-muted); text-align:center;" data-i18n="auth.noAccount">Don't have an account?</p>
+      <button id="authSwitchToSignup" class="btn btn-ghost w-full" data-i18n="auth.createAccount">Create account</button>
+    </div>
+
+    <div id="authFormSignUp" style="display:none;">
+      <h2 data-i18n="auth.createAccount">Create Account</h2>
+      <p data-i18n="auth.signUpWithGoogle">Continue with Google</p>
+      <button id="authGoogleBtn2" class="btn btn-accent w-full mb-16" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+        <span style="font-size:1.2rem;">🔍</span> <span>Google</span>
+      </button>
+      <hr style="margin:16px 0; border:none; border-top:1px solid var(--color-border);">
+      <p style="font-size:0.85rem; color:var(--color-text-muted); margin-bottom:12px;" data-i18n="auth.or">or</p>
+      <div style="display:flex; gap:8px; flex-direction:column;">
+        <input id="authName" type="text" placeholder="Full Name" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
+        <input id="authEmail2" type="email" placeholder="Email" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
+        <input id="authPassword2" type="password" placeholder="Password" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
+      </div>
+      <button id="authEmailBtn2" class="btn btn-primary w-full mb-8" data-i18n="auth.createAccount">Create Account</button>
+      <div style="margin:12px 0;">
+        <label style="display:flex; align-items:center; gap:8px; font-size:0.9rem; cursor:pointer; color:var(--color-text);">
+          <input type="checkbox" id="authMarketing" checked style="accent-color:var(--color-primary);">
+          <span data-i18n="auth.marketing">I'd like to hear about offers</span>
+        </label>
+      </div>
+      <p style="font-size:0.85rem; color:var(--color-text-muted); text-align:center;" data-i18n="auth.haveAccount">Already have an account?</p>
+      <button id="authSwitchToSignIn" class="btn btn-ghost w-full" data-i18n="auth.signIn">Sign In</button>
+    </div>
+
+    <div id="authProfileForm" style="display:none; text-align:center;">
+      <h2 data-i18n="auth.welcome">Welcome to Elona's Toys 🧸</h2>
+      <p data-i18n="auth.completeProfile">Let's complete your profile</p>
+      <div style="display:flex; gap:8px; flex-direction:column; margin:16px 0;">
+        <input id="profileName" type="text" placeholder="Full Name" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
+        <input id="profilePhone" type="tel" placeholder="+961 78 xxx xxxx" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
+        <input id="profileCity" type="text" placeholder="City / Area in Lebanon" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
+      </div>
+      <button id="profileSaveBtn" class="btn btn-primary w-full mb-16" data-i18n="auth.saveProfile">Save & Continue</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
