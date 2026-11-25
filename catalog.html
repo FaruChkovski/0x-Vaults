@@ -117,7 +117,7 @@
 <!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -132,6 +132,7 @@
 
   const app = initializeApp(firebaseConfig);
   window.firebaseAuth = getAuth(app);
+  await setPersistence(window.firebaseAuth, browserLocalPersistence);
   window.firebaseDb = getFirestore(app);
 </script>
 <script src="app.js"></script>
