@@ -790,7 +790,6 @@ window.toggleWatchlist = async function(productId) {
 
 // Auth state listener — sync watchlist on login
 window.firebaseAuth?.onAuthStateChanged(async (user) => {
-  updateAuthUI(user);
   if (user) {
     try {
       const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
@@ -844,6 +843,21 @@ function setupAuthUI() {
   if (authModal) {
     authModal.addEventListener('click', (e) => { if (e.target === authModal) hideAuthModal(); });
   }
+
+  // Restore signed-in state on page refresh — update button + sync watchlist
+  window.firebaseAuth?.onAuthStateChanged(async (user) => {
+    updateAuthUI(user);
+    if (user) {
+      try {
+        const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+        const snap = await getDoc(doc(window.firebaseDb, 'users', user.uid, 'watchlist', 'items'));
+        if (snap.exists() && snap.data().items) {
+          state.watchlist = snap.data().items;
+        }
+        renderWatchlist();
+      } catch (e) { /* best effort */ }
+    }
+  });
 
   // Google sign-in
   const authGoogleBtn = document.getElementById('authGoogleBtn');
