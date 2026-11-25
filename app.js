@@ -714,6 +714,84 @@ window.removeFromCart = removeFromCart;
 window.changeQty = changeQty;
 window.openProductModal = openProductModal;
 
+// --- Firebase Auth ---
+window.signUp = async function(email, password, name) {
+  if (!window.firebaseAuth) return;
+  const { createUserWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
+  const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+  try {
+    const cred = await createUserWithEmailAndPassword(window.firebaseAuth, email, password);
+    const user = cred.user;
+    await setDoc(doc(window.firebaseDb, 'users', user.uid), {
+      uid: user.uid,
+      email: user.email,
+      name: name || '',
+      createdAt: new Date()
+    });
+    showToast(state.lang === 'ar' ? 'تم إنشاء الحساب' : 'Account created');
+    return user;
+  } catch (e) {
+    showToast(e.message || 'Signup failed');
+    throw e;
+  }
+};
+
+window.signIn = async function(email, password) {
+  if (!window.firebaseAuth) return;
+  const { signInWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
+  try {
+    const cred = await signInWithEmailAndPassword(window.firebaseAuth, email, password);
+    showToast(state.lang === 'ar' ? 'تم تسجيل الدخول' : 'Signed in');
+    return cred.user;
+  } catch (e) {
+    showToast(e.message || 'Sign in failed');
+    throw e;
+  }
+};
+
+window.signOut = async function() {
+  if (!window.firebaseAuth) return;
+  const { signOut } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
+  try {
+    await signOut(window.firebaseAuth);
+    showToast(state.lang === 'ar' ? 'تم تسجيل الخروج' : 'Signed out');
+  } catch (e) {
+    showToast(e.message || 'Sign out failed');
+  }
+};
+
+// Sync watchlist to Firestore when logged in
+async function syncWatchlistToFirestore() {
+  if (!window.firebaseAuth || !window.firebaseDb || !window.firebaseAuth.currentUser) return;
+  const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+  try {
+    await setDoc(doc(window.firebaseDb, 'users', window.firebaseAuth.currentUser.uid, 'watchlist', 'items'), {
+      items: state.watchlist,
+      updatedAt: new Date()
+    });
+  } catch (e) { /* best effort */ }
+}
+
+const origToggleWatchlist = window.toggleWatchlist;
+window.toggleWatchlist = async function(productId) {
+  origToggleWatchlist(productId);
+  await syncWatchlistToFirestore();
+};
+
+// Auth state listener — sync watchlist on login
+window.firebaseAuth?.onAuthStateChanged(async (user) => {
+  if (user) {
+    try {
+      const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+      const snap = await getDoc(doc(window.firebaseDb, 'users', user.uid, 'watchlist', 'items'));
+      if (snap.exists() && snap.data().items) {
+        state.watchlist = snap.data().items;
+      }
+      renderWatchlist();
+    } catch (e) { /* best effort */ }
+  }
+});
+
 // --- Start ---
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);

@@ -107,6 +107,26 @@
 <!-- Toast -->
 <div class="toast" id="toast">Added to cart 🧸</div>
 
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCZIoT7II-00LSrCNlzM_i6SkIeyFf-8",
+    authDomain: "elona-s-toys.firebaseapp.com",
+    projectId: "elona-s-toys",
+    storageBucket: "elona-s-toys.firebasestorage.app",
+    messagingSenderId: "10036951846",
+    appId: "1:10036951846:web:c9afbaf08502bab26537",
+    measurementId: "G-6LVQER9NW1"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  window.firebaseAuth = getAuth(app);
+  window.firebaseDb = getFirestore(app);
+</script>
 <script src="app.js"></script>
 </body>
 </html>
