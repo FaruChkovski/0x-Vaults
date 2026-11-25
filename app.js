@@ -859,6 +859,37 @@ function setupAuthUI() {
     }
   });
 
+  // --- Profile popup ---
+  const profileModal = document.getElementById('profileModal');
+  const profileModalClose = document.getElementById('profileModalClose');
+  const profileNameEl = document.getElementById('profileName');
+  const profileEmailEl = document.getElementById('profileEmail');
+  const profileSwitchBtn = document.getElementById('profileSwitchBtn');
+  const profileSignOutBtn = document.getElementById('profileSignOutBtn');
+
+  function showProfilePopup() {
+    if (!profileModal) return;
+    const user = window.firebaseAuth.currentUser;
+    if (profileNameEl) profileNameEl.textContent = user?.displayName || user?.email?.split('@')[0] || 'User';
+    if (profileEmailEl) profileEmailEl.textContent = user?.email || '';
+    profileModal.classList.add('open');
+  }
+  function hideProfilePopup() {
+    if (!profileModal) return;
+    profileModal.classList.remove('open');
+  }
+  if (profileModalClose) profileModalClose.addEventListener('click', hideProfilePopup);
+  if (profileModal) profileModal.addEventListener('click', (e) => { if (e.target === profileModal) hideProfilePopup(); });
+  if (profileSignOutBtn) profileSignOutBtn.addEventListener('click', async () => {
+    hideProfilePopup();
+    await signOut();
+  });
+  if (profileSwitchBtn) profileSwitchBtn.addEventListener('click', async () => {
+    hideProfilePopup();
+    await signOut();
+    showAuthModal();
+  });
+
   // Google sign-in
   const authGoogleBtn = document.getElementById('authGoogleBtn');
   const authGoogleBtn2 = document.getElementById('authGoogleBtn2');
@@ -968,8 +999,8 @@ function setupAuthUI() {
     if (user) {
       const name = user.displayName || user.email?.split('@')[0] || 'User';
       authBtn.textContent = name;
-      authBtn.title = 'Sign Out';
-      authBtn.onclick = signOut;
+      authBtn.title = 'Profile';
+      authBtn.onclick = showProfilePopup;
     } else {
       authBtn.textContent = state.lang === 'ar' ? 'تسجيل الدخول / انضمام' : 'Sign In / Join';
       authBtn.title = 'Sign In';
