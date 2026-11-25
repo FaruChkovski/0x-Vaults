@@ -5,14 +5,14 @@
    ========================================= */
 
 :root {
-  /* Light mode (default) */
-  --color-bg: #F3F0FF;
-  --color-surface: #F7F3FB;
-  --color-border: #D8C4E8;
+  /* Light mode (default) — pinkish purple */
+  --color-bg: #FCEFF2;
+  --color-surface: #FFF1F2;
+  --color-border: #F4C2D7;
   --color-text: #2A2A2A;
-  --color-text-muted: #6B5B95;
-  --color-primary: #8E44AD;
-  --color-primary-hover: #6D3197;
+  --color-text-muted: #B83289;
+  --color-primary: #C2185B;
+  --color-primary-hover: #881337;
   --color-accent: #F1C40F;
   --color-accent-hover: #D4AC0D;
   --color-mascot: #F97316;
