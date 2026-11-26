@@ -116,8 +116,8 @@ h1, h2, h3, .font-heading {
   color: var(--color-text);
   cursor: pointer;
   transition: transform 0.1s, background 0.2s;
-  width: 220px;
-  height: 220px;
+  width: 200px;
+  height: 200px;
 }
 .icon-btn:active { transform: scale(0.97); }
 .icon-btn:hover { background: var(--color-surface-hover); }
