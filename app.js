@@ -539,6 +539,7 @@ function toggleWatchlist(productId) {
   }
   saveWatchlist();
   renderWatchlist();
+  syncWatchlistToFirestore();
 }
 
 function saveWatchlist() {
@@ -781,12 +782,6 @@ async function syncWatchlistToFirestore() {
     });
   } catch (e) { /* best effort */ }
 }
-
-const origToggleWatchlist = window.toggleWatchlist;
-window.toggleWatchlist = async function(productId) {
-  origToggleWatchlist(productId);
-  await syncWatchlistToFirestore();
-};
 
 // Auth state listener — sync watchlist on login
 window.firebaseAuth?.onAuthStateChanged(async (user) => {
