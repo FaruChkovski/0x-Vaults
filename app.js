@@ -1010,6 +1010,13 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAuthUI();
 });
 
+// Expose inline onclick handlers to window scope (product cards call them via HTML attributes)
+window.addToCart = addToCart;
+window.toggleWatchlist = toggleWatchlist;
+window.openProductModal = openProductModal;
+window.removeFromCart = removeFromCart;
+window.changeQty = changeQty;
+
 // --- Start ---
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
