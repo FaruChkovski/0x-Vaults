@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — Elona's Toys</title>
+<title>Watchlist — Elona's Toys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Cairo:wght@400;700&family=Lalezar&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
       <a href="index.html" data-i18n="nav.home">Home</a>
       <a href="catalog.html" data-i18n="nav.catalog">Catalog</a>
       <a href="about.html" data-i18n="nav.about">About Us</a>
-      <a href="contact.html" data-i18n="nav.contact">Contact</a>
+      <a href="watchlist.html" data-i18n="nav.watchlist">Watchlist</a>
       <a href="delivery.html" data-i18n="nav.delivery">Delivery Info</a>
     </nav>
   </div>
@@ -40,40 +40,18 @@
 </header>
 
 <main class="container py-48">
-  <div style="max-width:600px; margin:0 auto;">
-    <div class="card fade-in" style="padding:48px;">
-      <h1 data-i18n="nav.contact" style="font-family:var(--font-heading); font-size:2.5rem; margin-bottom:24px; text-align:center;">Contact Us</h1>
-      <p style="color:var(--color-text-muted); text-align:center; margin-bottom:32px;">Have a question? Reach out any way you like.</p>
-      
-      <div style="display:flex; gap:24px; margin-bottom:32px;">
-        <div style="flex:1; text-align:center; padding:20px; background:var(--color-surface); border-radius:var(--radius-sm); border:1px solid var(--color-border);">
-          <div style="font-size:2rem; margin-bottom:8px;">📞</div>
-          <div style="font-weight:700;">Call / WhatsApp</div>
-          <div style="color:var(--color-text-muted); font-size:0.95rem;">+961 78 702 712</div>
-          <a href="https://wa.me/96178702712" class="btn btn-accent btn-sm" style="margin-top:12px; display:inline-block;" target="_blank">Message on WhatsApp</a>
-        </div>
-        <div style="flex:1; text-align:center; padding:20px; background:var(--color-surface); border-radius:var(--radius-sm); border:1px solid var(--color-border);">
-          <div style="font-size:2rem; margin-bottom:8px;">📍</div>
-          <div style="font-weight:700;">Visit Us</div>
-          <div style="color:var(--color-text-muted); font-size:0.95rem;">Khaldeh, beside Rammal Supermarket</div>
-          <div style="color:var(--color-text-muted); font-size:0.95rem;">QFPH+QQV, Khalde, Lebanon</div>
-          <a href="https://maps.app.goo.gl/GNpD5vEMdzXuxDeJ6" class="btn btn-accent btn-sm" style="margin-top:12px; display:inline-block;" target="_blank">View on Map</a>
-        </div>
-      </div>
-
-      <h3 style="color:var(--color-primary); margin-bottom:16px;">Send us a message</h3>
-      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="display:flex; flex-direction:column; gap:16px;">
-        <!-- TODO: Replace YOUR_FORM_ID with your actual Formspree form ID before going live -->
-        <input type="text" name="name" placeholder="Your name" required style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
-        <input type="email" name="email" placeholder="Your email" required style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
-        <textarea name="message" rows="5" placeholder="How can we help?" required style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;"></textarea>
-        <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Send Message</button>
-      </form>
-      <p style="font-size:0.85rem; color:var(--color-text-muted); text-align:center; margin-top:24px;">
-        Or just WhatsApp us directly — we respond quickly!
-      </p>
-    </div>
+  <div class="section-header mb-48">
+    <h1 data-i18n="nav.watchlist">Your Watchlist</h1>
+    <p data-i18n="watchlist.subtitle">Save toys you love and get notified when they're on offer.</p>
   </div>
+  <div class="watchlist-empty" id="watchlistEmpty" style="text-align:center; padding:60px 20px;">
+    <div style="font-size:4rem; margin-bottom:16px;">💖</div>
+    <h3 style="font-family:var(--font-heading); color:var(--color-primary); margin-bottom:8px;" data-i18n="watchlist.empty">Your watchlist is empty</h3>
+    <p style="color:var(--color-text-muted);">Browse the catalog and tap the heart to save toys.</p>
+    <a href="catalog.html" class="btn btn-primary" data-i18n="watchlist.browse">Browse Catalog</a>
+  </div>
+  <div class="watchlist-grid" id="watchlistGrid" style="display:none; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:24px;"></div>
+  <div id="watchlistToast" class="toast" style="bottom:80px;">Added to watchlist 💖</div>
 </main>
 
 <!-- Search Modal -->
@@ -108,6 +86,16 @@
 <!-- Toast -->
 <div class="toast" id="toast">Added to cart 🧸</div>
 
+<!-- Product Detail Modal -->
+<div class="modal-overlay" id="productModalOverlay">
+  <div class="modal" style="max-width:600px;">
+    <button class="modal-close" id="productModalClose">×</button>
+    <div id="productModalContent">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
 <!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -115,7 +103,7 @@
   import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyCLZoTt71I-O0lSrCNlzM_i6Sk1eyFrF-8",
+    apiKey: "«reda...…»",
     authDomain: "elona-s-toys.firebaseapp.com",
     projectId: "elona-s-toys",
     storageBucket: "elona-s-toys.firebasestorage.app",

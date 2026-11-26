@@ -257,7 +257,7 @@ function applyLang() {
   const translations = {
     en: {
       'nav.home': 'Home', 'nav.catalog': 'Catalog', 'nav.about': 'About Us',
-      'nav.contact': 'Contact', 'nav.delivery': 'Delivery Info',
+      'nav.watchlist': 'Watchlist', 'nav.delivery': 'Delivery Info',
       'hero.title': "Elona's Toys", 'hero.tagline': "Your One-Stop Kids Store — Toys & Essentials — Quality You Can Trust",
       'hero.shop': 'Shop Toys', 'hero.whatsapp': 'WhatsApp Us',
       'section.special': 'Special Offers', 'section.categories': 'Categories',
@@ -279,7 +279,7 @@ function applyLang() {
     },
     ar: {
       'nav.home': 'الرئيسية', 'nav.catalog': 'المتجر', 'nav.about': 'معلومات عنا',
-      'nav.contact': 'اتصل بنا', 'nav.delivery': 'معلومات التوصيل',
+      'nav.watchlist': 'قائمة الأمنيات', 'nav.delivery': 'معلومات التوصيل',
       'hero.title': "ألعاب إيلونا", 'hero.tagline': "متجرك الشامل للأطفال — ألعاب ومستلزمات — جودة تثق بها",
       'hero.shop': 'تسوق الألعاب', 'hero.whatsapp': 'واتساب',
       'section.special': 'عروض خاصة', 'section.categories': 'الأقسام',
