@@ -997,11 +997,13 @@ function setupAuthUI() {
       const name = user.displayName || user.email?.split('@')[0] || 'User';
       authBtn.textContent = name;
       authBtn.title = 'Profile';
-      authBtn.onclick = showProfilePopup;
+      authBtn.onclick = null;
+      authBtn.addEventListener('click', (e) => { e.stopPropagation(); showProfilePopup(); });
     } else {
       authBtn.textContent = state.lang === 'ar' ? 'تسجيل الدخول / انضمام' : 'Sign In / Join';
       authBtn.title = 'Sign In';
-      authBtn.onclick = showAuthModal;
+      authBtn.onclick = null;
+      authBtn.addEventListener('click', (e) => { e.stopPropagation(); showAuthModal(); });
     }
   }
 }
