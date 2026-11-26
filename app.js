@@ -834,9 +834,6 @@ function setupAuthUI() {
     if (prof) prof.style.display = 'none';
   }
 
-  if (authBtn) {
-    authBtn.addEventListener('click', showAuthModal);
-  }
   if (authModalClose) {
     authModalClose.addEventListener('click', hideAuthModal);
   }
