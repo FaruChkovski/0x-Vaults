@@ -149,9 +149,11 @@
         <input id="authEmail" type="email" placeholder="Email" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
         <input id="authPassword" type="password" placeholder="Password" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
       </div>
-      <button id="authEmailBtn" class="btn btn-primary w-full mb-16" data-i18n="auth.signIn">Sign In</button>
+      <div style="display:flex; justify-content:center; gap:12px; flex-direction:column; align-items:center;">
+        <button id="authEmailBtn" class="btn btn-primary mb-16" data-i18n="auth.signIn">Sign In</button>
+        <button id="authSwitchToSignup" class="btn btn-ghost" data-i18n="auth.createAccount">Create account</button>
+      </div>
       <p style="font-size:0.85rem; color:var(--color-text-muted); text-align:center;" data-i18n="auth.noAccount">Don't have an account?</p>
-      <button id="authSwitchToSignup" class="btn btn-ghost w-full" data-i18n="auth.createAccount">Create account</button>
     </div>
 
     <div id="authFormSignUp" style="display:none;">
@@ -169,7 +171,8 @@
         <input id="authEmail2" type="email" placeholder="Email" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
         <input id="authPassword2" type="password" placeholder="Password" style="padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-text); font-size:1rem;">
       </div>
-      <button id="authEmailBtn2" class="btn btn-primary w-full mb-8" data-i18n="auth.createAccount">Create Account</button>
+      <div style="display:flex; justify-content:center; gap:12px; flex-direction:column; align-items:center;">
+        <button id="authEmailBtn2" class="btn btn-primary mb-8" data-i18n="auth.createAccount">Create Account</button>
       <div style="margin:12px 0;">
         <label style="display:flex; align-items:center; gap:8px; font-size:0.9rem; cursor:pointer; color:var(--color-text);">
           <input type="checkbox" id="authMarketing" checked style="accent-color:var(--color-primary);">
