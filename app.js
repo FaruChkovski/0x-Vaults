@@ -1006,6 +1006,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // --- Start ---
+window.addToCart = addToCart;
+window.toggleWatchlist = toggleWatchlist;
+window.openProductModal = openProductModal;
+window.removeFromCart = removeFromCart;
+window.changeQty = changeQty;
+window.addToCartFromDetail = addToCartFromDetail;
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
