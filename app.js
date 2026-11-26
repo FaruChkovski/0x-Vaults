@@ -765,6 +765,9 @@ window.signOut = async function() {
   try {
     await signOut(window.firebaseAuth);
     showToast(state.lang === 'ar' ? 'تم تسجيل الخروج' : 'Signed out');
+    // Revert the auth button to "Sign In / Join" after logout so the popout
+    // re-opens as the sign-in modal instead of showing a stale profile.
+    updateAuthUI(null);
   } catch (e) {
     showToast(e.message || 'Sign out failed');
   }
